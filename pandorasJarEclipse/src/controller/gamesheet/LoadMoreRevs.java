@@ -22,8 +22,7 @@ public class LoadMoreRevs extends HttpServlet
         ArrayList<Review> moreReviews = DAOFactory.getInstance().makeReviewDAO().getReviewsFromIdGame
                 (Integer.valueOf(req.getParameter("gameId")), true);
         String json = gson.toJson(moreReviews);
-        //resp.setContentType("application/json");
-        //resp.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
         resp.getWriter().println(json);
         resp.getWriter().flush();
     }
