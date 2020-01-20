@@ -85,19 +85,17 @@ public class PurchaseDAO {
                 return null;
             SoldGames soldGames = new SoldGames();
             int idGame = 0;
-            double currentPrice = 0;
             while(result.next())
             {
                 idGame = result.getInt("game");
                 String currentYear = result.getString(1);
-                String queryGame = "SELECT * FROM public.game WHERE idGame = " + idGame + " AND developer = " + id + ";";
+                String queryGame = "SELECT * FROM public.game WHERE idGame = '" + idGame + "' AND developer = '" + id + "';";
                 PreparedStatement statementGame = connection.prepareStatement(queryGame);
                 ResultSet resultGame = statementGame.executeQuery();
                 if(resultGame.next())
                 {
                     soldGPerYear.put(Integer.valueOf(currentYear), soldGPerYear.get(Integer.valueOf(currentYear)) + 1);
-                    currentPrice += resultGame.getDouble("price");
-                    earnedMoneyPerYear.put(Integer.valueOf(currentYear), earnedMoneyPerYear.get(Integer.valueOf(currentYear)) + currentPrice);
+                    earnedMoneyPerYear.put(Integer.valueOf(currentYear), earnedMoneyPerYear.get(Integer.valueOf(currentYear)) + resultGame.getDouble("price"));
                 }
             }
             soldGames.setSoldGPerYear(soldGPerYear);

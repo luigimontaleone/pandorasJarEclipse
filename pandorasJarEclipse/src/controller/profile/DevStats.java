@@ -18,29 +18,31 @@ public class DevStats extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        int idUser = 1;
-
+        int idUser = 1;//(int) req.getSession().getAttribute("userId");
         SoldGames tempSG = DAOFactory.getInstance().makePurchaseDAO().getSoldGamesFromIdUser(idUser);
         TreeMap<Integer, Integer> soldGPerYear = tempSG.getSoldGPerYear();
         TreeMap<Integer, Double> earnedMoneyPerYear = tempSG.getEarnedMoneyPerYear();
-        int totalSoldGames = 0;
-        double totalMoneyEarned = 0;
+        double averageSoldGames = 0;
+        double averageMoneyEarned = 0;
         for(Integer year : soldGPerYear.keySet())
         {
-            totalSoldGames++;
-            totalMoneyEarned += earnedMoneyPerYear.get(year);
+            averageSoldGames += soldGPerYear.get(year);
+            averageMoneyEarned += earnedMoneyPerYear.get(year);
         }
-        this.log(totalSoldGames + "\n" + totalMoneyEarned);
+        averageSoldGames /= soldGPerYear.keySet().size();
+        averageMoneyEarned /= earnedMoneyPerYear.keySet().size();
+        System.out.println(averageMoneyEarned + "   " + averageSoldGames);
+        //this.log(totalSoldGames + "\n" + totalMoneyEarned);
         req.getSession().setAttribute("soldGameKeys", soldGPerYear.keySet());
         req.getSession().setAttribute("soldGameValues", soldGPerYear.values());
 
         req.getSession().setAttribute("moneyEarnedKeys", earnedMoneyPerYear.keySet());
         req.getSession().setAttribute("moneyEarnedValues", earnedMoneyPerYear.values());
 
-        req.getSession().setAttribute("totalSold", totalSoldGames);
-        req.getSession().setAttribute("totalMoney", totalMoneyEarned);
+        req.getSession().setAttribute("averageSoldGames", averageSoldGames);
+        req.getSession().setAttribute("averageMoneyEarned", averageMoneyEarned);
 
-        RequestDispatcher rd = req.getRequestDispatcher("devStats.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("newDevStats.jsp");
         rd.forward(req, resp);
     }
 }
