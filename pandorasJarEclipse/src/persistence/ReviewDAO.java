@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class ReviewDAO {
     private PreparedStatement statement;
-
+    private final int limit = 3;
     public void addCommentForGame(int id, int stars, String comment, int author, String username){
         Connection connection = DataSource.getInstance().getConnection();
         String query = "INSERT INTO public.review(idreview, stars, comment, author, game, username) VALUES (default,?,?,?,?,?)";
@@ -33,10 +33,14 @@ public class ReviewDAO {
         }
     }
 
-    public ArrayList<Review> getReviewsFromIdGame(int id)
+    public ArrayList<Review> getReviewsFromIdGame(int id, boolean more)
     {
         Connection connection = DataSource.getInstance().getConnection();
-        String query = "SELECT * FROM public.review WHERE game = ?::integer";
+        String query = "SELECT * FROM public.review WHERE game = ?::integer LIMIT " + limit;
+        if(more)
+        {
+            query = "SELECT * FROM public.review WHERE game = ?::integer AND idreview > " + limit;
+        }
         try {
             statement = connection.prepareStatement(query);
             statement.setString(1,Integer.toString(id));
@@ -64,6 +68,5 @@ public class ReviewDAO {
         }
         return null;
     }
-
 
 }

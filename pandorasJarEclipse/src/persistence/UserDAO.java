@@ -41,7 +41,7 @@ public class UserDAO {
             g.setPayment(rs.getString("paymentscoord"));
             g.setDescription(rs.getString("description"));
             g.setRelease(rs.getDate("release"));
-            g.setReviews(DAOFactory.getInstance().makeReviewDAO().getReviewsFromIdGame(rs.getInt("idgame")));
+            g.setReviews(DAOFactory.getInstance().makeReviewDAO().getReviewsFromIdGame(rs.getInt("idgame"), false));
             games.add(g);
         }
         return games;

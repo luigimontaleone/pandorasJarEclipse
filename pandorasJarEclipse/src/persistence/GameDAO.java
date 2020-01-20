@@ -68,7 +68,7 @@ public class GameDAO {
                 game.setId(id);
                 createGame(result, game);
             }
-            game.setReviews(DAOFactory.getInstance().makeReviewDAO().getReviewsFromIdGame(game.getId()));
+            game.setReviews(DAOFactory.getInstance().makeReviewDAO().getReviewsFromIdGame(game.getId(), false));
             return game;
         } catch (SQLException e) {
             e.printStackTrace();
