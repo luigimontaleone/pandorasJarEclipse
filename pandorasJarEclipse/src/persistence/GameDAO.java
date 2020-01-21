@@ -159,7 +159,7 @@ public class GameDAO {
 
     public ArrayList<Game> getGamesFromNameLike(String gameName) {
         Connection connection = DataSource.getInstance().getConnection();
-        String query = "SELECT game.idgame, previewimg.link FROM public.game, public.previewimg WHERE game.idgame = previewimg.game and previewimg.front = true and game.name iLIKE ?;";
+        String query = "SELECT game.idgame, game.category, game.price, previewimg.link FROM public.game, public.previewimg WHERE game.idgame = previewimg.game and previewimg.front = true and game.name iLIKE ?;";
         try {
             statement = connection.prepareStatement(query);
             statement.setString(1, "%"+gameName+"%");
@@ -170,6 +170,8 @@ public class GameDAO {
             while(result.next()) {
                 Game game = new Game();
                 game.setId(result.getInt("idgame"));
+                game.setPrice(result.getDouble("price"));
+                game.setCategory(result.getString("category"));
                 game.setFrontImage(result.getString("link"));
                 games.add(game);
             }

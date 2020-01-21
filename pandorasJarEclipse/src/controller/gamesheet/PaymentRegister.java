@@ -27,7 +27,7 @@ import java.util.Date;
 @WebServlet(value="/PaymentSuccess")
 public class PaymentRegister extends HttpServlet
 {
-    Gson gson = new Gson();
+    private Gson gson = new Gson();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String json = req.getParameter("data");

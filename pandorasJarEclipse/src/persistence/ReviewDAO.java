@@ -69,4 +69,29 @@ public class ReviewDAO {
         return null;
     }
 
+    public String getValutazioneMediaGioco(int id) {
+        Connection connection = DataSource.getInstance().getConnection();
+        String query = "SELECT review.stars FROM public.review WHERE game = ?";
+        try {
+            statement = connection.prepareStatement(query);
+            statement.setInt(1,id);
+            ResultSet result = statement.executeQuery();
+            if(result.isClosed())
+                return null;
+            int totaleStars = 0;
+            int cont = 0;
+            while(result.next()) {
+                totaleStars += result.getInt("stars");
+                cont++;
+            }
+            if(cont > 0)
+                totaleStars /= cont;
+
+            return Integer.toString(totaleStars);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 }

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/indexStyle.css">
+    <link rel="stylesheet" href="css/filterStyle.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 </head>
 
@@ -47,6 +48,36 @@
                 <li data-target="#carousel-1" data-slide-to="2"></li>
             </ol>
         </div>
+    </div>
+
+    <div class="filter border rounded" id="filter">
+        <form action="SearchFilterIndex" method="get">
+            <select id="categoria" name="categoria">
+                <option value="" selected="selected">Categoria</option>
+                <option value="shooter">Shooter</option>
+                <option value="arcade">Arcade</option>
+                <option value="avventura">Avventura</option>
+                <option value="azione">Azione</option>
+            </select>
+            <select id="prezzo" name="prezzo">
+                <option value="" selected="selected">Prezzo</option>
+                <option value="0">0€-9€</option>
+                <option value="10">10€-19€</option>
+                <option value="20">20€-29€</option>
+                <option value="30">30€-39€</option>
+                <option value="40">40€-49€</option>
+                <option value="50">50€ ></option>
+            </select>
+            <select id="valutazione" name="valutazione">
+                <option value="" selected="selected">Valutazione media</option>
+                <option value="1">1⭐</option>
+                <option value="2">2⭐</option>
+                <option value="3">3⭐</option>
+                <option value="4">4⭐</option>
+                <option value="5">5⭐</option>
+            </select>
+            <button type="submit" id="filter-btn" class="border rounded" value="filtra">Filtra</button>
+        </form>
     </div>
 
     <div class="category-games border rounded">

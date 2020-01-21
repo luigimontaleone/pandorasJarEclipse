@@ -20,7 +20,7 @@ public class SearchGame extends HttpServlet {
         if(gameName != null)
         {
             ArrayList<Game> games = DAOFactory.getInstance().makeGameDAO().getGamesFromNameLike(gameName);
-            req.setAttribute("games", games);
+            req.getSession().setAttribute("games", games);
             RequestDispatcher rd = req.getRequestDispatcher("searchGame.jsp");
             rd.forward(req, resp);
         }

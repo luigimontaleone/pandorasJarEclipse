@@ -17,11 +17,17 @@ public class DataSource {
         return instance;
     }
 
-    public Connection getConnection()
-    {
+    public Connection getConnection(){
         try {
-            connection = DriverManager.getConnection("jdbc:postgresql://52.232.2.252:5432/phukyqqr", "phukyqqr", "hpUab8l3fo2EeyNPHqG_u6tcqhApry_c");
-        } catch (SQLException e) {
+            if (connection == null || connection.isClosed()) {
+                try {
+                    connection = DriverManager.getConnection("jdbc:postgresql://52.232.2.252:5432/phukyqqr", "phukyqqr", "hpUab8l3fo2EeyNPHqG_u6tcqhApry_c");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return connection;

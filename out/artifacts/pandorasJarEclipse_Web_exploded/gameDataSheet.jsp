@@ -149,7 +149,7 @@
         </div>
     </div>
     <div class="row" id="thirdRow">
-        <div class="col">
+        <div id="reviewsDiv" class="col">
             <c:forEach items="${reviews}" var="review">
                 <div class="border rounded" id="divReviews">
                     <label class="d-block color-orange" style="font-size: 20px;"><a href="/profile?id=${review.author}">${review.username}</a></label>
@@ -157,6 +157,7 @@
                     <p class="p-review">${review.comment}</p>
                 </div>
             </c:forEach>
+            <button style="margin-top: 1%;" type="button" id="loadMoreRevs" class="btn btn-secondary btn-sm btn-block">Carica tutte le recensioni</button>
         </div>
     </div>
     <div class="row" id="fourthRow">
