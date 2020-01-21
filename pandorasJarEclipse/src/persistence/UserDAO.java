@@ -341,4 +341,37 @@ public class UserDAO {
             DataSource.getInstance().closeConnection();
         }
     }
+
+    public void addRequestUserFriend(int idFriend, int idMain) {
+        Connection connection = DataSource.getInstance().getConnection();
+        int nextId = getRequestFriendNextId(connection);
+        String query = "INSERT INTO requestfriend(id,sender,receiver) values(?,?,?);";
+        try {
+            statement = connection.prepareStatement(query);
+            statement.setInt(1,nextId);
+            statement.setInt(2,idMain);
+            statement.setInt(3,idFriend);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            DataSource.getInstance().closeConnection();
+        }
+    }
+    private int getRequestFriendNextId(Connection conn)
+    {
+        String query = "SELECT nextval('request_friend_sequence') AS id";
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(query);
+            ResultSet set = stmt.executeQuery();
+            set.next();
+            return set.getInt("id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

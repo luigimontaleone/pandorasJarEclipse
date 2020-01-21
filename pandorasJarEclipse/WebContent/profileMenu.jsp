@@ -30,6 +30,7 @@
             <li class="nav-item"><a class="nav-link" href="profile" style="color: rgba(255,255,255,0.5);">General</a></li>
             <li class="nav-item"><a class="nav-link" href="friendsList" style="color: rgba(255,255,255,0.5);">Friends</a></li>
             <li class="nav-item"><a class="nav-link" href="inviteFriend" style="color: rgba(255,255,255,0.5);">Invite friend</a></li>
+            <li class="nav-item"><a class="nav-link" href="friendRequests" style="color: rgba(255,255,255,0.5);">Richieste in sospeso</a></li>
             <li class="nav-item"><a class="nav-link" href="chatFriend" style="color: rgba(255,255,255,0.5);">Chat with friends</a></li>
             <li class="nav-item"><a class="nav-link" href="UserStats" style="color: rgba(255,255,255,0.5);">Game Statistics</a></li>
             <li class="nav-item"><a class="nav-link" href="devStats" style="color: rgba(255,255,255,0.5);">Developer Statistics</a></li>
