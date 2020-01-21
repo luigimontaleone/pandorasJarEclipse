@@ -25,17 +25,17 @@
         <jsp:include page="header.jsp" />
         <div class="row" id="firstRow">
             <div class="col-3" id="divProfileMenu">
-                <jsp:include page="profileMenu.html"></jsp:include>
+                <jsp:include page="profileMenu.jsp"></jsp:include>
             </div>
             <div class="col" >
                 <div class="row text-center">
-                    <div class="col-xl-5 text-center">
+                    <div class="col-xl-12 text-center">
                         <div id="photoProfile">
                             <c:if test="${empty user.image}">
                                 <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
                             </c:if>
                             <c:if test="${not empty user.image}">
-                                <img src="/PrintImage?id=${user.id}" height="220" width="220">
+                                <img src="/PrintImage?id=${user.id}" height="400" width="400">
                             </c:if>
                         </div>
                         <c:if test="${not friend}">
@@ -46,42 +46,44 @@
                             </form>
                         </c:if>
                     </div>
+                </div>
+                <div class="row" id="secondRow">
                     <div class="col">
                         <form class="text-center" id="profileDetails" method="post" action="changeProfileDetails?change=1">
                             <div class="jumbotron" id="tableJumbotron">
                                 <div class="table-responsive text-center" id="divTable">
                                     <table class="table">
                                         <tbody>
-                                            <tr>
-                                                <td class="text-center field-name">Username:</td>
-                                                <td><input class="form-control" type="text" name="inputUsername" id="inputUsername" readonly value="${user.username}"></td>
-                                                <c:if test="${not friend}">
-                                                    <td style="width: 127px;"><button class="btn btn-primary fas fa-edit btn-color" type="button" id="btnChangeUsername"></button></td>
-                                                </c:if>
-                                            </tr>
-                                            <tr>
-                                                <td class="field-name">Email:</td>
-                                                <td><input class="form-control" type="email" name="inputEmail" id="inputEmail" readonly value="${user.email}"></td>
-                                                <c:if test="${not friend}">
-                                                    <td><button class="btn btn-primary fas fa-edit btn-color" type="button" id="btnChangeEmail"></button></td>
-                                                </c:if>
-                                            </tr>
+                                        <tr>
+                                            <td class="text-center field-name">Username:</td>
+                                            <td><input class="form-control" type="text" name="inputUsername" id="inputUsername" readonly value="${user.username}"></td>
                                             <c:if test="${not friend}">
+                                                <td style="width: 127px;"><button class="btn btn-primary fas fa-edit btn-color" type="button" id="btnChangeUsername"></button></td>
+                                            </c:if>
+                                        </tr>
+                                        <tr>
+                                            <td class="field-name">Email:</td>
+                                            <td><input class="form-control" type="email" name="inputEmail" id="inputEmail" readonly value="${user.email}"></td>
+                                            <c:if test="${not friend}">
+                                                <td><button class="btn btn-primary fas fa-edit btn-color" type="button" id="btnChangeEmail"></button></td>
+                                            </c:if>
+                                        </tr>
+                                        <c:if test="${not friend}">
                                             <tr>
                                                 <td class="field-name">Password:</td>
                                                 <td><input class="form-control" type="text" name="inputPassword" id="inputPassword" readonly value="${user.password}"></td>
 
-                                                    <td><button class="btn btn-primary fas fa-edit btn-color" type="button" id="btnChangePassword"></button></td>
+                                                <td><button class="btn btn-primary fas fa-edit btn-color" type="button" id="btnChangePassword"></button></td>
 
                                             </tr>
+                                        </c:if>
+                                        <tr>
+                                            <td class="field-name">Description:</td>
+                                            <td><textarea class="form-control" name="inputDescription" id="inputDescription" readonly rows="5">${user.description}</textarea></td>
+                                            <c:if test="${not friend}">
+                                                <td><button class="btn btn-primary fas fa-edit btn-color" type="button" id="btnChangeDescription"></button></td>
                                             </c:if>
-                                            <tr>
-                                                <td class="field-name">Description:</td>
-                                                <td><input class="form-control" type="text" name="inputDescription" id="inputDescription" readonly value="${user.description}"></td>
-                                                <c:if test="${not friend}">
-                                                    <td><button class="btn btn-primary fas fa-edit btn-color" type="button" id="btnChangeDescription"></button></td>
-                                                </c:if>
-                                            </tr>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -90,27 +92,6 @@
                                 <button class="btn btn-primary text-center border rounded btn-color" type="sumbit" id="saveBtn">Save</button>
                             </c:if>
                         </form>
-                    </div>
-                </div>
-                <div class="row" id="secondRow">
-                    <div class="col">
-                        <div class="jumbotron text-center" id="friendsJumbotron">
-                            <h1 class="text-center" id="h1Fiends">Friends:</h1>
-                            <div id="friendsList">
-                                <c:forEach items="${user.friends}" var="friend">
-                                    <a href="profile?id=${friend.id}">${friend.username}</a>,
-                                </c:forEach>
-                            </div>
-                            <div id="divAddFriend">
-                                <c:if test="${not friend}">
-                                    <button class="btn btn-primary text-center border rounded btn-color" type="button" id="addFriend">Add friend</button>
-                                    <form id="formAddFriend" method="post" action="changeProfileDetails?change=2">
-                                        <div id="insideForm">
-                                        </div>
-                                    </form>
-                                </c:if>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

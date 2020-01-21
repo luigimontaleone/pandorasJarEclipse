@@ -20,7 +20,7 @@
         <jsp:include page="header.jsp"></jsp:include>
         <div id="row">
             <div id="first_column">
-                <jsp:include page="profileMenu.html"></jsp:include>
+                <jsp:include page="profileMenu.jsp"></jsp:include>
             </div>
             <div id="second_column">
                 <div class="row" height="200px">

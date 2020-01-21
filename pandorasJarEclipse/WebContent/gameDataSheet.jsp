@@ -68,7 +68,7 @@
         <div class="col float-left" style="width: 40%;">
             <h1 class="text-center color-orange" >${game.name}</h1>
             <div>
-                <textarea readonly class="border rounded" style="font-size: 20px; width: 100%; background-color: #e9ecef !important; resize: none;" rows="5">${game.description}</textarea>
+                <textarea readonly class="border rounded" id="gameDescription" rows="5">${game.description}</textarea>
                 <div>
                     <label class="d-block label-game-info">Data Rilascio : ${game.release}</label>
                     <label class="d-block label-game-info">Sviluppatore : <a href="/profile?id=${game.idDeveloper}">${developer}</a></label>

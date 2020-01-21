@@ -273,12 +273,10 @@ public class UserDAO {
                 UserBox user = new UserBox();
                 if(result.getInt("sender") == idUser)
                 {
-                    //System.out.println("receiver: " + result.getInt("receiver"));
                     user.setUserId(result.getInt("receiver"));
                 }
                 if(result.getInt("receiver") == idUser)
                 {
-                    //System.out.println("sender: " + result.getInt("sender"));
                     user.setUserId(result.getInt("sender"));
                 }
                 user.setUsername(result.getString("username"));
@@ -292,6 +290,27 @@ public class UserDAO {
         }
         finally
         {
+            DataSource.getInstance().closeConnection();
+        }
+    }
+
+    public void deleteUserFriend(int userId, int id) {
+        Connection connection = DataSource.getInstance().getConnection();
+        String query = "DELETE FROM user_friend WHERE iduser1 = ? and iduser2 = ?;";
+         try{
+            statement = connection.prepareStatement(query);
+            statement.setInt(1,userId);
+            statement.setInt(2,id);
+            statement.executeUpdate();
+
+             statement = connection.prepareStatement(query);
+             statement.setInt(1,id);
+             statement.setInt(2,userId);
+             statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
             DataSource.getInstance().closeConnection();
         }
     }

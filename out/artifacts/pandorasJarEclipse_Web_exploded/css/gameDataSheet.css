@@ -95,3 +95,10 @@
     margin-left: 5%;
     margin-top: 2%;
 }
+
+#gameDescription{
+    font-size: 20px;
+    width: 100%;
+    background-color: #e9ecef !important;
+    resize: none;
+}

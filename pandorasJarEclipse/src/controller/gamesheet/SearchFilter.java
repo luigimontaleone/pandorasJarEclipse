@@ -21,7 +21,6 @@ public class SearchFilter extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("here");
         ArrayList<Game> games = (ArrayList<Game>) req.getSession().getAttribute("games");
         String json = req.getParameter("data");
         Filter filter = gson.fromJson(json, Filter.class);
@@ -34,18 +33,21 @@ public class SearchFilter extends HttpServlet {
         }
         String valutazione = filter.getValutazione();
         ArrayList<Game> newGames = new ArrayList<Game>();
-        for(Game g: games)
+        if(games != null)
         {
-            String categoriaGioco = g.getCategory();
-            double prezzoGioco = g.getPrice();
-            String valutazioneGioco = DAOFactory.getInstance().makeReviewDAO().getValutazioneMediaGioco(g.getId());
-            if(categoria.equals("") || categoriaGioco.equals(categoria))
+            for(Game g: games)
             {
-                if(valutazione.equals("") || valutazioneGioco.equals(valutazione))
+                String categoriaGioco = g.getCategory();
+                double prezzoGioco = g.getPrice();
+                String valutazioneGioco = DAOFactory.getInstance().makeReviewDAO().getValutazioneMediaGioco(g.getId());
+                if(categoria.equals("") || categoriaGioco.equals(categoria))
                 {
-                    if(prezzo == null || (prezzoGioco >= prezzo && prezzoGioco <= prezzo+9) || (prezzo == 50 && prezzoGioco >= prezzo))
+                    if(valutazione.equals("") || valutazioneGioco.equals(valutazione))
                     {
-                        newGames.add(g);
+                        if(prezzo == null || (prezzoGioco >= prezzo && prezzoGioco <= prezzo+9) || (prezzo == 50 && prezzoGioco >= prezzo))
+                        {
+                            newGames.add(g);
+                        }
                     }
                 }
             }
