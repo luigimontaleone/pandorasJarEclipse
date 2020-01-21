@@ -2,6 +2,7 @@ package persistence;
 
 import model.Game;
 import model.User;
+import model.UserBox;
 import org.apache.commons.io.IOUtils;
 
 import javax.xml.crypto.Data;
@@ -257,22 +258,37 @@ public class UserDAO {
         }
     }
 
-    public void getUsersBox(int idUser)
+    public ArrayList<UserBox> getUsersBox(int idUser)
     {
         Connection connection = DataSource.getInstance().getConnection();
-        String query = "SELECT * FROM public.messages WHERE receiver = '" + idUser + "' OR sender = '" + idUser + "'";
+        String query = "SELECT u.username, m.* FROM public.messages AS m, public.user AS u WHERE (m.receiver = '" + idUser + "'" +
+                " AND m.sender = u.iduser) OR (m.sender = '" + idUser + "' AND m.receiver = u.iduser)";
         try
         {
             statement = connection.prepareStatement(query);
-            statement.executeUpdate();
             ResultSet result = statement.executeQuery();
+            ArrayList<UserBox> usersBox = new ArrayList<UserBox>();
             while(result.next())
             {
-
+                UserBox user = new UserBox();
+                if(result.getInt("sender") == idUser)
+                {
+                    //System.out.println("receiver: " + result.getInt("receiver"));
+                    user.setUserId(result.getInt("receiver"));
+                }
+                if(result.getInt("receiver") == idUser)
+                {
+                    //System.out.println("sender: " + result.getInt("sender"));
+                    user.setUserId(result.getInt("sender"));
+                }
+                user.setUsername(result.getString("username"));
+                usersBox.add(user);
             }
+            return usersBox;
         } catch (SQLException e)
         {
             e.printStackTrace();
+            return null;
         }
         finally
         {
