@@ -256,4 +256,27 @@ public class UserDAO {
             DataSource.getInstance().closeConnection();
         }
     }
+
+    public void getUsersBox(int idUser)
+    {
+        Connection connection = DataSource.getInstance().getConnection();
+        String query = "SELECT * FROM public.messages WHERE receiver = '" + idUser + "' OR sender = '" + idUser + "'";
+        try
+        {
+            statement = connection.prepareStatement(query);
+            statement.executeUpdate();
+            ResultSet result = statement.executeQuery();
+            while(result.next())
+            {
+
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            DataSource.getInstance().closeConnection();
+        }
+    }
 }
