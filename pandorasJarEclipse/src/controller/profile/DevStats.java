@@ -31,8 +31,6 @@ public class DevStats extends HttpServlet
         }
         averageSoldGames /= soldGPerYear.keySet().size();
         averageMoneyEarned /= earnedMoneyPerYear.keySet().size();
-        System.out.println(averageMoneyEarned + "   " + averageSoldGames);
-        //this.log(totalSoldGames + "\n" + totalMoneyEarned);
         req.getSession().setAttribute("soldGameKeys", soldGPerYear.keySet());
         req.getSession().setAttribute("soldGameValues", soldGPerYear.values());
 

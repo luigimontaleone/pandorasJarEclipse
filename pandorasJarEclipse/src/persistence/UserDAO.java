@@ -1,5 +1,7 @@
 package persistence;
 
+import controller.profile.Chat;
+import model.ChatBox;
 import model.Game;
 import model.User;
 import model.UserBox;
@@ -261,8 +263,8 @@ public class UserDAO {
     public ArrayList<UserBox> getUsersBox(int idUser)
     {
         Connection connection = DataSource.getInstance().getConnection();
-        String query = "SELECT u.username, m.* FROM public.messages AS m, public.user AS u WHERE (m.receiver = '" + idUser + "'" +
-                " AND m.sender = u.iduser) OR (m.sender = '" + idUser + "' AND m.receiver = u.iduser)";
+        String query = "SELECT u.username, f.iduser2 FROM public.user_friend AS f, public.user AS u WHERE " +
+                "f.iduser1 = '" + idUser + "' AND f.iduser2 = u.iduser";
         try
         {
             statement = connection.prepareStatement(query);
@@ -271,18 +273,43 @@ public class UserDAO {
             while(result.next())
             {
                 UserBox user = new UserBox();
-                if(result.getInt("sender") == idUser)
-                {
-                    user.setUserId(result.getInt("receiver"));
-                }
-                if(result.getInt("receiver") == idUser)
-                {
-                    user.setUserId(result.getInt("sender"));
-                }
-                user.setUsername(result.getString("username"));
+                user.setUserId(result.getInt(2));
+                user.setUsername(result.getString(1));
                 usersBox.add(user);
             }
             return usersBox;
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            DataSource.getInstance().closeConnection();
+        }
+    }
+
+    public ArrayList<ChatBox> getChat(int idUser, int other, boolean logged)
+    {
+        Connection connection = DataSource.getInstance().getConnection();
+        String query = "SELECT idmessage, TO_CHAR(date, 'Mon dd, yyyy'), message FROM public.messages WHERE" +
+                " sender = '" + idUser + "' AND receiver = '" + other + "' ORDER BY idmessage ASC";
+        try
+        {
+            statement = connection.prepareStatement(query);
+            ResultSet result = statement.executeQuery();
+            ArrayList<ChatBox> chatBoxes = new ArrayList<ChatBox>();
+            while(result.next())
+            {
+                ChatBox chat = new ChatBox();
+                chat.setUserId(idUser);
+                chat.setIdMessage(result.getInt(1));
+                chat.setLogged(logged);
+                chat.setDate(result.getString(2));
+                chat.setMessaggio(result.getString(3));
+                chatBoxes.add(chat);
+            }
+            return chatBoxes;
         } catch (SQLException e)
         {
             e.printStackTrace();
