@@ -1,0 +1,19 @@
+#divProfileMenu{
+    background-color: rgb(25,25,112);
+    margin-left: 0%;
+    margin-right: 0%;
+}
+
+#friend-jumbotron{
+    text-align: center;
+    margin-top: 3%;
+}
+
+#friend-input{
+    margin:auto;
+}
+
+#inviaRichiesta{
+    color: rgb(255,255,255);
+    margin-top: 3%;
+}
