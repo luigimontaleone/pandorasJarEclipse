@@ -1,4 +1,10 @@
-#list-table {
+#divProfileMenu{
+    background-color: rgb(25,25,112);
+    margin-left: 0%;
+    margin-right: 0%;
+}
+
+.table-options {
     margin-bottom: 0;
     cellspacing:0;
     width:100%;
@@ -8,23 +14,19 @@
     margin: 0px 10px;
     margin-bottom: 20px;
 }
-
-#divProfileMenu{
-    background-color: rgb(25,25,112);
-    margin-left: 0%;
-    margin-right: 0%;
-}
-
-.container{
+.list-container{
     margin-top: 3%;
     margin-bottom: 6%;
 }
 
-#h2Friends{
+.color-orange{
     color: rgb(255,165,0);
 }
 
-.tr-color{
+.tr-color-received{
+    background-color: rgb(207,204,255) !important;
+}
+.tr-color-sent{
     background-color: rgb(207,204,255) !important;
 }
 

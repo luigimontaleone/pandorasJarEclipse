@@ -35,11 +35,11 @@ public class DataSource {
 
     public void closeConnection()
     {
-        try {
+        /*try {
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 }
