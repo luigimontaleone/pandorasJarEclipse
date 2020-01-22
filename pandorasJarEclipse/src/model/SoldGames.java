@@ -9,6 +9,24 @@ public class SoldGames
 {
     TreeMap<Integer,Integer> soldGPerYear;
     TreeMap<Integer,Double> earnedMoneyPerYear;
+    TreeMap<Integer,Integer> soldGPerMonth;
+    TreeMap<Integer,Double> earnedMoneyPerMonth;
+
+    public TreeMap<Integer, Integer> getSoldGPerMonth() {
+        return soldGPerMonth;
+    }
+
+    public void setSoldGPerMonth(TreeMap<Integer, Integer> soldGPerMonth) {
+        this.soldGPerMonth = soldGPerMonth;
+    }
+
+    public TreeMap<Integer, Double> getEarnedMoneyPerMonth() {
+        return earnedMoneyPerMonth;
+    }
+
+    public void setEarnedMoneyPerMonth(TreeMap<Integer, Double> earnedMoneyPerMonth) {
+        this.earnedMoneyPerMonth = earnedMoneyPerMonth;
+    }
 
     public TreeMap<Integer, Integer> getSoldGPerYear() {
         return soldGPerYear;
