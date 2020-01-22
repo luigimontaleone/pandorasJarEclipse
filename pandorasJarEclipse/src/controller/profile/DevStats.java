@@ -18,7 +18,7 @@ public class DevStats extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        int idUser = 1;//(int) req.getSession().getAttribute("userId");
+        int idUser = (int) req.getSession().getAttribute("userId");
         SoldGames tempSG = DAOFactory.getInstance().makePurchaseDAO().getSoldGamesFromIdUser(idUser);
         TreeMap<Integer, Integer> soldGPerYear = tempSG.getSoldGPerYear();
         TreeMap<Integer, Double> earnedMoneyPerYear = tempSG.getEarnedMoneyPerYear();

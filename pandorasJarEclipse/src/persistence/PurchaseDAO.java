@@ -57,52 +57,84 @@ public class PurchaseDAO {
         return null;
     }
 
-    public SoldGames getSoldGamesFromIdUser(int id)
+    public SoldGames getSoldGamesFromIdUserByYear(String year, int id)
     {
         Connection connection = DataSource.getInstance().getConnection();
-        TreeMap<Integer,Integer> soldGPerYear = new TreeMap<Integer,Integer>();
-        TreeMap<Integer,Double> earnedMoneyPerYear = new TreeMap<Integer,Double>();
-        String queryYears = "SELECT EXTRACT(YEAR FROM date) FROM public.purchase;";
+        TreeMap<Integer,Integer> soldGPerMonth = new TreeMap<Integer, Integer>();
+        TreeMap<Integer,Double> earnedMoneyPerMonth = new TreeMap<Integer, Double>();
+        int[] months = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        for(int m : months)
+        {
+            soldGPerMonth.put(m, 0);
+            earnedMoneyPerMonth.put(m, 0.0);
+        }
+        String queryGame = "SELECT idgame, price FROM public.game WHERE developer = '" + id +"';";
         try
         {
-            statement = connection.prepareStatement(queryYears);
+            statement = connection.prepareStatement(queryGame);
             ResultSet result = statement.executeQuery();
             while(result.next())
             {
-                soldGPerYear.put(Integer.valueOf(result.getString(1)), 0);
-                earnedMoneyPerYear.put(Integer.valueOf(result.getString(1)), 0.0);
+                int idGame = result.getInt(1);
+                String queryStat = "SELECT EXTRACT(MONTH FROM date) FROM public.purchase WHERE game='" + idGame + "' AND EXTRACT(YEAR FROM date) = '" + year + "';";
+                PreparedStatement stmt = connection.prepareStatement(queryStat);
+                ResultSet res = stmt.executeQuery();
+                while (res.next())
+                {
+                    int month = Integer.parseInt(res.getString(1));
+                    soldGPerMonth.put(month, soldGPerMonth.get(month) + 1);
+                    earnedMoneyPerMonth.put(month, earnedMoneyPerMonth.get(month) + result.getDouble(2));
+                }
             }
+            SoldGames soldGames = new SoldGames();
+            soldGames.setSoldGPerMonth(soldGPerMonth);
+            soldGames.setEarnedMoneyPerMonth(earnedMoneyPerMonth);
+            return soldGames;
         } catch (SQLException e)
         {
             e.printStackTrace();
         }
-        String querySoldGames = "SELECT EXTRACT(YEAR FROM date), game FROM public.purchase;";
+        finally
+        {
+            DataSource.getInstance().closeConnection();
+        }
+        return null;
+    }
+    public SoldGames getSoldGamesFromIdUser(int id)
+    {
+        Connection connection = DataSource.getInstance().getConnection();
+        TreeMap<Integer,Integer> soldGPerYear = new TreeMap<Integer, Integer>();
+        TreeMap<Integer,Double> earnedMoneyPerYear = new TreeMap<Integer, Double>();
+        int[] years = {2016, 2017, 2018, 2019, 2020};
+        for(int m : years)
+        {
+            soldGPerYear.put(m, 0);
+            earnedMoneyPerYear.put(m, 0.0);
+        }
+        String queryGame = "SELECT idgame, price FROM public.game WHERE developer = '" + id +"';";
         try
         {
-            statement = connection.prepareStatement(querySoldGames);
+            statement = connection.prepareStatement(queryGame);
             ResultSet result = statement.executeQuery();
-            if(result.isClosed())
-                return null;
-            SoldGames soldGames = new SoldGames();
-            int idGame = 0;
             while(result.next())
             {
-                idGame = result.getInt("game");
-                String currentYear = result.getString(1);
-                String queryGame = "SELECT * FROM public.game WHERE idGame = '" + idGame + "' AND developer = '" + id + "';";
-                PreparedStatement statementGame = connection.prepareStatement(queryGame);
-                ResultSet resultGame = statementGame.executeQuery();
-                if(resultGame.next())
+                int idGame = result.getInt(1);
+                String queryStat = "SELECT EXTRACT(YEAR FROM date) FROM public.purchase WHERE game='" + idGame + "';";
+                PreparedStatement stmt = connection.prepareStatement(queryStat);
+                ResultSet res = stmt.executeQuery();
+                while (res.next())
                 {
-                    soldGPerYear.put(Integer.valueOf(currentYear), soldGPerYear.get(Integer.valueOf(currentYear)) + 1);
-                    earnedMoneyPerYear.put(Integer.valueOf(currentYear), earnedMoneyPerYear.get(Integer.valueOf(currentYear)) + resultGame.getDouble("price"));
+                    int year = Integer.parseInt(res.getString(1));
+                    soldGPerYear.put(year, soldGPerYear.get(year) + 1);
+                    earnedMoneyPerYear.put(year, earnedMoneyPerYear.get(year) + result.getDouble(2));
                 }
             }
+            SoldGames soldGames = new SoldGames();
             soldGames.setSoldGPerYear(soldGPerYear);
             soldGames.setEarnedMoneyPerYear(earnedMoneyPerYear);
             return soldGames;
-
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
         finally
