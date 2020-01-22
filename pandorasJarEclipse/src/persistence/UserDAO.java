@@ -201,45 +201,6 @@ public class UserDAO {
         }
     }
 
-    public void addUserFriend(int friend, int main) {
-        Connection connection = DataSource.getInstance().getConnection();
-        int nextId = getFriendNextId(connection);
-        String query = "INSERT INTO user_friend(iduser1,iduser2,id) values(?::integer,?::integer,?::integer)";
-        try {
-            statement = connection.prepareStatement(query);
-            statement.setString(1,Integer.toString(main));
-            statement.setString(2,Integer.toString(friend));
-            statement.setString(3,Integer.toString(nextId));
-            statement.executeUpdate();
-
-            nextId = getFriendNextId(connection);
-            statement = connection.prepareStatement(query);
-            statement.setString(1,Integer.toString(friend));
-            statement.setString(2,Integer.toString(main));
-            statement.setString(3,Integer.toString(nextId));
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally{
-            DataSource.getInstance().closeConnection();
-        }
-    }
-
-    private int getFriendNextId(Connection conn)
-    {
-        String query = "SELECT nextval('user_friend_sequence') AS id";
-        PreparedStatement stmt = null;
-        try {
-            stmt = conn.prepareStatement(query);
-            ResultSet set = stmt.executeQuery();
-            set.next();
-            return set.getInt("id");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
 
     public void changeProfileImageUser(int idUser, InputStream fileContent) {
         Connection connection = DataSource.getInstance().getConnection();
@@ -318,59 +279,6 @@ public class UserDAO {
         }
     }
 
-    public void deleteUserFriend(int userId, int id) {
-        Connection connection = DataSource.getInstance().getConnection();
-        String query = "DELETE FROM user_friend WHERE iduser1 = ? and iduser2 = ?;";
-         try{
-            statement = connection.prepareStatement(query);
-            statement.setInt(1,userId);
-            statement.setInt(2,id);
-            statement.executeUpdate();
-
-             statement = connection.prepareStatement(query);
-             statement.setInt(1,id);
-             statement.setInt(2,userId);
-             statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally{
-            DataSource.getInstance().closeConnection();
-        }
-    }
-
-    public void addRequestUserFriend(int idFriend, int idMain) {
-        Connection connection = DataSource.getInstance().getConnection();
-        int nextId = getRequestFriendNextId(connection);
-        String query = "INSERT INTO requestfriend(id,sender,receiver) values(?,?,?);";
-        try {
-            statement = connection.prepareStatement(query);
-            statement.setInt(1,nextId);
-            statement.setInt(2,idMain);
-            statement.setInt(3,idFriend);
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally{
-            DataSource.getInstance().closeConnection();
-        }
-    }
-    private int getRequestFriendNextId(Connection conn)
-    {
-        String query = "SELECT nextval('request_friend_sequence') AS id";
-        PreparedStatement stmt = null;
-        try {
-            stmt = conn.prepareStatement(query);
-            ResultSet set = stmt.executeQuery();
-            set.next();
-            return set.getInt("id");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
     private int getMessageNextId(Connection conn)
     {
         String query = "SELECT nextval('messages_sequence') AS id";
@@ -404,5 +312,31 @@ public class UserDAO {
         {
             DataSource.getInstance().closeConnection();
         }
+    }
+
+    public User getUserByIdUserWithoutFriends(int id) {
+        Connection connection = DataSource.getInstance().getConnection();
+        String query = "SELECT * FROM public.user WHERE idUser = ?";
+        try {
+            statement = connection.prepareStatement(query);
+            statement.setInt(1,id);
+            ResultSet result = statement.executeQuery();
+            if(result.isClosed())
+                return null;
+            User u = new User();
+            while(result.next())
+            {
+                u.setId(id);
+                u.setUsername(result.getString("username"));
+                u.setEmail(result.getString("email"));
+            }
+            return u;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            DataSource.getInstance().closeConnection();
+        }
+        return null;
     }
 }

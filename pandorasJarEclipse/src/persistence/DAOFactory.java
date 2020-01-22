@@ -53,4 +53,8 @@ public class DAOFactory {
     public FriendRequestsDAO makeFriendRequestsDAO() {
         return new FriendRequestsDAO();
     }
+
+    public PostDAO makePostDAO() {
+        return new PostDAO();
+    }
 }
