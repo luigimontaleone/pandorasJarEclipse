@@ -48,7 +48,7 @@ public class SearchFilterIndex extends HttpServlet {
                 }
             }
         }
-        req.setAttribute("games", newGames);
+        req.getSession().setAttribute("games", newGames);
         RequestDispatcher rd = req.getRequestDispatcher("searchGame.jsp");
         rd.forward(req, resp);
     }
