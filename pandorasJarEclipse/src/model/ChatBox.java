@@ -8,6 +8,16 @@ public class ChatBox implements Comparable
     String date;
     boolean logged;
 
+    public ChatBox() {
+    }
+
+    public ChatBox(int userId, String messaggio, String date, boolean logged) {
+        this.userId = userId;
+        this.messaggio = messaggio;
+        this.date = date;
+        this.logged = logged;
+    }
+
     public int getUserId() {
         return userId;
     }

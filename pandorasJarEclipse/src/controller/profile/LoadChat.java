@@ -21,7 +21,7 @@ public class LoadChat extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        int userId = 1;//(int) req.getSession().getAttribute("userId");
+        int userId = (int) req.getSession().getAttribute("userId");
         int other = Integer.parseInt(req.getParameter("id"));
         ArrayList<ChatBox> chatBoxesMittente = DAOFactory.getInstance().makeUserDAO().getChat(userId, other, true);
         ArrayList<ChatBox> chatBoxesDestinatario = DAOFactory.getInstance().makeUserDAO().getChat(other, userId, false);

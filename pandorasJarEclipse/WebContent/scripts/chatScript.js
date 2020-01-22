@@ -40,4 +40,43 @@ $(document).ready(()=>{
             });
         });
     })
+
+
 });
+
+function send()
+{
+    var text = $('#typedText').val();
+    var userId = $('.input-group').attr('id');
+    var receiver = $('.active').attr('id');
+    var currentDate = getCurrent();
+    if(text != "") {
+        $('#typedText').val("");
+
+        $.post("/sendMessage",
+            {
+                data: JSON.stringify({"receiver": receiver, "message": text, "date": currentDate})
+            }, function (dataAltroFormato) {
+                $('#messages').append("<div class=\"media w-50 ml-auto mb-3\">\n" +
+                    "                        <div style=\"margin-right: 2%; margin-top: 2%;\"class=\"media-body\">\n" +
+                    "                            <div class=\"bg-primary rounded py-2 px-3 mb-2\">\n" +
+                    "                                <p class=\"text-small mb-0 text-white\">" + text + "</p>\n" +
+                    "                            </div>\n" +
+                    "                            <p class=\"small text-muted\">" + dataAltroFormato + "</p>\n" +
+                    "                        </div>\n" +
+                    "                        <img src=\"/PrintImage?id=" + userId + "\" alt=\"user\" width=\"50\" class=\"rounded-circle\">\n" +
+                    "                    </div>");
+                $('#typedText').val("");
+        });
+    }
+}
+
+function getCurrent() {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    return today;
+}

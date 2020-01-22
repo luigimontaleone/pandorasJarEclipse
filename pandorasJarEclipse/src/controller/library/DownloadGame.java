@@ -20,7 +20,7 @@ public class DownloadGame extends HttpServlet {
         String gameName = DAOFactory.getInstance().makeGameDAO().getGameById(Integer.parseInt(req.getParameter("id"))).getName();
         String directory = this.getServletContext().getRealPath(File.separator);
         directory += File.separator+"gameFiles"+File.separator+gameName;
-        System.out.println(directory);
+        //System.out.println(directory);
         String filePath = "";
         File f = new File(directory);
         System.out.println(f.exists());

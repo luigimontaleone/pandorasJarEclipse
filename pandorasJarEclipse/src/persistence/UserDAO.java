@@ -1,10 +1,7 @@
 package persistence;
 
 import controller.profile.Chat;
-import model.ChatBox;
-import model.Game;
-import model.User;
-import model.UserBox;
+import model.*;
 import org.apache.commons.io.IOUtils;
 
 import javax.xml.crypto.Data;
@@ -373,5 +370,39 @@ public class UserDAO {
             e.printStackTrace();
         }
         return 0;
+    }
+    private int getMessageNextId(Connection conn)
+    {
+        String query = "SELECT nextval('messages_sequence') AS id";
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(query);
+            ResultSet set = stmt.executeQuery();
+            set.next();
+            return set.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public void insertMessage(int userId, SentMessage message)
+    {
+        Connection connection = DataSource.getInstance().getConnection();
+        message.setSender(userId);
+        message.setIdmessage(getMessageNextId(connection));
+        System.out.println(message);
+        String query = "INSERT INTO public.messages values('" + userId + "','" + message.getReceiver() + "','" + message.getMessage() + "','" + message.getDate() + "','" + message.getIdmessage() + "');";
+        try
+        {
+            statement = connection.prepareStatement(query);
+            statement.executeUpdate();
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            DataSource.getInstance().closeConnection();
+        }
     }
 }

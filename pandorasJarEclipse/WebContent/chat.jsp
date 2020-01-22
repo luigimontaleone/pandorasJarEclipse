@@ -16,7 +16,8 @@
     <script src="scripts/chatScript.js"></script>
 </head>
 
-<body><div class="bootstrap_chat">
+<body>
+<div class="bootstrap_chat">
     <div class="container py-5 px-4">
         <!-- For demo purpose-->
         <header class="text-center">
@@ -63,15 +64,14 @@
                 </div>
 
                 <!-- Typing area -->
-                <form action="#" class="bg-light">
-                    <div class="input-group">
-                        <input type="text" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
-                        <div class="input-group-append">
-                            <button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
-                        </div>
+                <form class="bg-light">
+                    <div id="${userId}" class="input-group">
+                        <input type="text" id="typedText" placeholder="Scrivi un messaggio" class="form-control rounded-0 border-0 py-4 bg-light">
+                        <a class="input-group-append">
+                            <button id="sendMessage" type="button" onclick="send()" class="btn btn-link"><i class="fa fa-paper-plane"></i></button>
+                        </a>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
