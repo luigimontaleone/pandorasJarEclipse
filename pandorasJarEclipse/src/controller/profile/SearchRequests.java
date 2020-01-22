@@ -11,26 +11,32 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(value = "/SearchFriend")
-public class SearchFriend extends HttpServlet {
+@WebServlet(value = "/SearchRequests")
+public class SearchRequests extends HttpServlet {
     private Gson gson = new Gson();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer idFriend = null;
+        Integer id = null;
+        Integer received = null;
         try{
-            idFriend = Integer.parseInt(req.getParameter("id"));
+            received = Integer.parseInt(req.getParameter("received"));
+            id = Integer.parseInt(req.getParameter("id"));
         }
         catch(NumberFormatException e)
         {}
-        ArrayList<User> friends = (ArrayList<User>) req.getSession().getAttribute("friends");
-        if(idFriend != null)
+        ArrayList<User> requests = null;
+        if(received != null && received == 1)
+            requests = (ArrayList<User>) req.getSession().getAttribute("receivedRequests");
+        else if(received != null && received == 0)
+            requests = (ArrayList<User>) req.getSession().getAttribute("sentRequests");
+        if(id != null)
         {
-            if(friends != null)
+            if(requests != null)
             {
-                for(User u: friends)
+                for(User u: requests)
                 {
-                    if(u.getId() == idFriend)
+                    if(u.getId() == id)
                     {
                         String jsonSend = gson.toJson(u);
                         resp.setCharacterEncoding("UTF-8");
@@ -44,7 +50,7 @@ public class SearchFriend extends HttpServlet {
         }
         else
         {
-            String jsonSend = gson.toJson(friends);
+            String jsonSend = gson.toJson(requests);
             resp.setCharacterEncoding("UTF-8");
             resp.getWriter().println(jsonSend);
             resp.getWriter().flush();

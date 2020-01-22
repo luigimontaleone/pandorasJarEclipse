@@ -28,7 +28,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <table id="list-table" class="table table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th>Id</th>
@@ -44,8 +44,8 @@
                                     <td>${friend.username}</td>
                                     <td>${friend.email}</td>
                                     <td>
-                                        <button type="button" id="deleteFriend" onclick="deleteFriend(${friend.id})" class="btn btn-danger"><i class="far fa-trash-alt d-xl-flex justify-content-xl-center align-items-xl-center"></i></button>
-                                        <a type="button" href="/profile?id=${friend.id}" class="btn btn-primary"><i class="fas fa-address-card d-xl-flex justify-content-xl-center align-items-xl-center"></i></a>
+                                        <button type="button" id="deleteFriend" onclick="deleteFriend(${friend.id})" class="btn btn-danger btn-table"><i class="far fa-trash-alt d-xl-flex justify-content-xl-center align-items-xl-center"></i></button>
+                                        <a type="button" href="/profile?id=${friend.id}" class="btn btn-primary btn-table"><i class="fas fa-address-card d-xl-flex justify-content-xl-center align-items-xl-center"></i></a>
                                     </td>
                                 </tr>
                             </c:forEach>

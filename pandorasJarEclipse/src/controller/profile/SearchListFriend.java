@@ -2,7 +2,6 @@ package controller.profile;
 
 import com.google.gson.Gson;
 import model.User;
-import persistence.DAOFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,29 +11,43 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(value = "/DeleteFriend")
-public class DeleteFriend extends HttpServlet {
+@WebServlet(value = "/SearchListFriend")
+public class SearchListFriend extends HttpServlet {
     private Gson gson = new Gson();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer id = Integer.parseInt(req.getParameter("id"));
+        Integer idFriend = null;
+        try{
+            idFriend = Integer.parseInt(req.getParameter("id"));
+        }
+        catch(NumberFormatException e)
+        {}
         ArrayList<User> friends = (ArrayList<User>) req.getSession().getAttribute("friends");
-        if(id != null)
+        if(idFriend != null)
         {
-            DAOFactory.getInstance().makeFriendRequestsDAO().deleteUserFriend((int)req.getSession().getAttribute("userId"), id);
-            for(User u: friends){
-                if(u.getId() == id)
+            if(friends != null)
+            {
+                for(User u: friends)
                 {
-                    friends.remove(u);
-                    break;
+                    if(u.getId() == idFriend)
+                    {
+                        String jsonSend = gson.toJson(u);
+                        resp.setCharacterEncoding("UTF-8");
+                        resp.getWriter().println(jsonSend);
+                        resp.getWriter().flush();
+                        break;
+                    }
                 }
             }
+
+        }
+        else
+        {
             String jsonSend = gson.toJson(friends);
             resp.setCharacterEncoding("UTF-8");
             resp.getWriter().println(jsonSend);
             resp.getWriter().flush();
-
         }
     }
 }

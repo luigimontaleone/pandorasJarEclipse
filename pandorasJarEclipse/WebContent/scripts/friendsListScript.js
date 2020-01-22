@@ -10,7 +10,7 @@ function searchFriend()
         {
             var friends = JSON.parse(data);
             $('.tr-color').remove();
-            if(friends.length > 1)
+            if(friends.length > 0)
             {
                 friends.forEach(function (friend)
                 {

@@ -1,6 +1,8 @@
 package persistence;
 
 
+import controller.profile.FriendRequests;
+
 public class DAOFactory {
     static private DAOFactory instance = null;
     private DAOFactory() {
@@ -46,5 +48,9 @@ public class DAOFactory {
     public ScoreDAO makeScoreDAO()
     {
         return new ScoreDAO();
+    }
+
+    public FriendRequestsDAO makeFriendRequestsDAO() {
+        return new FriendRequestsDAO();
     }
 }

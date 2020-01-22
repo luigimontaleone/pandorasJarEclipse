@@ -3,6 +3,7 @@ package controller.profile;
 import com.google.gson.Gson;
 import model.User;
 import persistence.DAOFactory;
+import persistence.FriendRequestsDAO;
 import persistence.UserDAO;
 
 import javax.servlet.RequestDispatcher;
@@ -34,15 +35,16 @@ public class InviteFriend extends HttpServlet {
 
         if(newFriend != null)
         {
-            UserDAO dao = DAOFactory.getInstance().makeUserDAO();
-            User friend = dao.getUserByIdUser(newFriend);
-            User principale = dao.getUserByIdUser((int) req.getSession().getAttribute("userId"));
+            UserDAO userDao = DAOFactory.getInstance().makeUserDAO();
+            FriendRequestsDAO friendRequestsDAO = DAOFactory.getInstance().makeFriendRequestsDAO();
+            User friend = userDao.getUserByIdUser(newFriend);
+            User principale = userDao.getUserByIdUser((int) req.getSession().getAttribute("userId"));
             if(friend != null)
             {
                 String jsonSend;
                 if(principale.addFriend(friend))
                 {
-                    dao.addRequestUserFriend(friend.getId(), principale.getId());
+                    friendRequestsDAO.addRequestUserFriend(friend.getId(), principale.getId());
                     jsonSend = "ok";
                 }
                 else
