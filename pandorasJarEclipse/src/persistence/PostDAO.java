@@ -82,4 +82,100 @@ public class PostDAO {
         }
         return null;
     }
+
+    public void addLikeDislike(int idPost, int like) {
+        Connection connection = DataSource.getInstance().getConnection();
+        String query = "UPDATE public.post SET numlike = numlike + 1 WHERE id = ?";
+        if(like == 0)
+            query = "UPDATE public.post SET numdislike = numdislike + 1 WHERE id = ?";
+        try {
+            statement = connection.prepareStatement(query);
+            statement.setInt(1,idPost);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            DataSource.getInstance().closeConnection();
+        }
+    }
+
+    private int getPostNextId(Connection conn)
+    {
+        String query = "SELECT nextval('post_sequence') AS id";
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(query);
+            ResultSet set = stmt.executeQuery();
+            set.next();
+            return set.getInt("id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public void addPost(Post post) {
+        Connection connection = DataSource.getInstance().getConnection();
+        int nextId = getPostNextId(connection);
+        post.setId(nextId);
+        String query = "INSERT INTO post(id,idauthor,title,numlike,numdislike,image,description) values(?,?,?,?,?,?,?);";
+        try {
+            statement = connection.prepareStatement(query);
+            statement.setInt(1,nextId);
+            statement.setInt(2,post.getAuthorId());
+            String author = DAOFactory.getInstance().makeUserDAO().getUserByIdUserWithoutFriends(post.getAuthorId()).getUsername();
+            post.setAuthor(author);
+            statement.setString(3, post.getTitle());
+            statement.setInt(4, post.getNumLike());
+            statement.setInt(5, post.getNumDislike());
+            statement.setString(6, post.getImage());
+            statement.setString(7, post.getDescription());
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            DataSource.getInstance().closeConnection();
+        }
+    }
+
+    private int getCommentNextId(Connection conn)
+    {
+        String query = "SELECT nextval('comment_sequence') AS id";
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(query);
+            ResultSet set = stmt.executeQuery();
+            set.next();
+            return set.getInt("id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public void addComment(Comment comment, int idpost) {
+        Connection connection = DataSource.getInstance().getConnection();
+        int nextId = getPostNextId(connection);
+        comment.setId(nextId);
+        String query = "INSERT INTO comment(id,comment,idauthor,idpost) values(?,?,?,?);";
+        try {
+            statement = connection.prepareStatement(query);
+            statement.setInt(1,nextId);
+            statement.setString(2,comment.getComment());
+            String author = DAOFactory.getInstance().makeUserDAO().getUserByIdUserWithoutFriends(comment.getAuthorId()).getUsername();
+            comment.setAuthor(author);
+            statement.setInt(3, comment.getAuthorId());
+            statement.setInt(4, idpost);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            DataSource.getInstance().closeConnection();
+        }
+    }
 }

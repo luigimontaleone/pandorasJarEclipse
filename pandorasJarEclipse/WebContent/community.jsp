@@ -23,28 +23,56 @@
 </head>
 <body>
     <jsp:include page="header.jsp"></jsp:include>
-    <c:forEach items="${posts}" var="post">
-        <div class="row filtr-container">
-            <div class="col-md-11 col-lg-6 filtr-item" data-category="2,3" style="margin: auto;">
-                <div class="card border-dark">
-                    <div class="card-header bg-dark text-light">
-                        <h5 class="m-0">${post.title}</h5>
-                    </div>
-                    <img class="img-fluid card-img w-100 d-block rounded-0" src="${post.image}">
-                    <div class="card-body">
-                        <a href="/profile?id=${post.authorId}"><p class="card-text">Autore: ${post.author}</p></a>
-                        <p class="card-text">${post.description}</p>
-                    </div>
-                    <div class="d-flex card-footer">
-                        <button class="btn btn-success btn-sm" type="button"><i class="fas fa-thumbs-up"></i>${post.numLike}</button>
-                        <button class="btn btn-danger btn-sm ml-auto" type="button"><i class="fas fa-thumbs-down"></i>${post.numDislike}</button>
-                        <button class="btn btn-primary btn-sm ml-auto" type="button"><i class="fas fa-comments"></i>${fn:length(post.comments)}</button>
+    <c:if test="${logged}">
+        <div class="row" style="margin-top: 2%;">
+            <div class="col-md-6" style="margin: auto;">
+                <form class="border rounded form-addPost">
+                    <h1 class="text-center" style="font-size: 40px;margin-bottom: 4%; color:white;">Aggiungi un post!</h1>
+                    <input class="border rounded input-addPost" type="text" id="userId" readonly value="${userId}">
+                    <input class="border rounded input-addPost" type="text" id="titolo" placeholder="Titolo">
+                    <input class="border rounded input-addPost" type="text" id="descrizione" placeholder="Descrizione">
+                    <input class="border rounded input-addPost" type="text" id="immagine" placeholder="Immagine">
+                    <button class="btn btn-primary" id="btn-addPost" type="button" style="margin-right: 0px;margin-left: 0px;background-color: #00baff;">Salva</button>
+                </form>
+            </div>
+        </div>
+    </c:if>
+    <div id="container">
+        <c:forEach items="${posts}" var="post">
+            <div class="row filtr-container">
+                <div class="col-md-11 col-lg-6 filtr-item" style="margin: auto;">
+                    <div class="card border-dark">
+                        <div class="card-header bg-dark text-light">
+                            <h5 class="m-0">${post.title}</h5>
+                        </div>
+                        <img class="img-fluid card-img w-100 d-block rounded-0" src="${post.image}">
+                        <div class="card-body">
+                            <p class="card-text">Autore: <a href="/profile?id=${post.authorId}">${post.author}</a></p>
+                            <p class="card-text">${post.description}</p>
+                        </div>
+                        <div class="d-flex card-footer">
+                            <c:if test="${logged}">
+                                <button class="btn btn-success btn-sm" type="button" onclick="addLikeDislike(${post.id},1)"><i class="fas fa-thumbs-up"></i> ${post.numLike}</button>
+                                <button class="btn btn-danger btn-sm ml-auto" type="button" onclick="addLikeDislike(${post.id},0)"><i class="fas fa-thumbs-down"></i> ${post.numDislike}</button>
+                            </c:if>
+                            <c:if test="${not logged}">
+                                <button class="btn btn-success btn-sm" type="button"><i class="fas fa-thumbs-up"></i> ${post.numLike}</button>
+                                <button class="btn btn-danger btn-sm ml-auto" type="button"><i class="fas fa-thumbs-down"></i> ${post.numDislike}</button>
+                            </c:if>
+                            <button class="btn btn-primary btn-sm ml-auto btn-open-comments" onclick="openComments(${post.id})" type="button"><i class="fas fa-comments"></i> ${fn:length(post.comments)}</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </c:forEach>
-
+            <div id="commentsList" class="modal fade">
+                <div class="modal-dialog modal-comments">
+                    <h2 class="color-orange">Commenti:</h2>
+                    <div class="modal-content">
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
     <jsp:include page="footer.html"></jsp:include>
 </body>
 </html>

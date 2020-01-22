@@ -21,11 +21,6 @@ function searchFriend()
             {
                 addFriend(friends);
             }
-
-
-
-
-
         });
 }
 

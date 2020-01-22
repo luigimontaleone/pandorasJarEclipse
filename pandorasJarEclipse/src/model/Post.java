@@ -29,6 +29,15 @@ public class Post {
         this.comments = comments;
     }
 
+    public Post(int authorId, int numLike, int numDislike, String title, String image, String description) {
+        this.authorId = authorId;
+        this.numLike = numLike;
+        this.numDislike = numDislike;
+        this.title = title;
+        this.image = image;
+        this.description = description;
+    }
+
     public String getDescription() {
         return description;
     }

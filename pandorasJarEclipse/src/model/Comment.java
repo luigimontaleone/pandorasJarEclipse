@@ -15,6 +15,11 @@ public class Comment {
         this.comment = comment;
     }
 
+    public Comment(int authorId, String comment) {
+        this.authorId = authorId;
+        this.comment = comment;
+    }
+
     public int getId() {
         return id;
     }

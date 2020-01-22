@@ -45,3 +45,38 @@ body{
 @keyframes pulsate {
 }
 
+.color-orange{
+    color: rgb(255,165,0) !important;
+}
+
+.divComments{
+    background-color: rgb(26,26,78);
+    padding-left:2%;
+}
+
+.p-comment{
+    color:white;
+}
+
+#btn-add-comment {
+    margin: 0px 10px;
+    margin-bottom: 20px;
+    border-radius: 0;
+    font-family: 'Roboto';
+    font-weight: 400;
+}
+
+.form-addPost{
+    background-color: rgb(26,26,78);
+    text-align: center;
+}
+
+.input-addPost{
+    width: 70%;
+    margin-bottom: 15px !important;
+    margin: auto;
+}
+
+#btn-addPost{
+    width: 40%;
+}
