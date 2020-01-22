@@ -73,7 +73,6 @@ public class UserDAO {
         User user = new User();
         while(rs.next()) {
             user.setId(rs.getInt("iduser"));
-            System.out.println(user.getId());
             if (user.getId() == 0) {
                 return null;
             }
@@ -125,7 +124,6 @@ public class UserDAO {
     public User getUserByEmail(String email){
         Connection connection = DataSource.getInstance().getConnection();
         String query = "SELECT * FROM public.user WHERE email = ?";
-        System.out.println(email);
         try {
             statement = connection.prepareStatement(query);
             statement.setString(1, email);
