@@ -57,7 +57,7 @@ public class UserStats extends HttpServlet {
         req.getSession().setAttribute("bestScoreName", bestScore.getSecond());
         req.getSession().setAttribute("bestScoreValue", bestScore.getFirst());
 
-        RequestDispatcher rd = req.getRequestDispatcher("userStats.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("newUserStats.jsp");
         rd.forward(req,resp);
     }
 }

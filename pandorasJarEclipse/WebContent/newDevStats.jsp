@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link rel="stylesheet" href="css/filterStyle.css">
+    <link rel="stylesheet" href="css/newDevStatsStyle.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
@@ -19,7 +20,11 @@
 
 <body id="page-top" style="background-color: #284c67;">
 <jsp:include page="header.jsp" />
-<div id="wrapper">
+<div class="row" id="firstRow">
+    <div class="col-3" id="divProfileMenu">
+        <jsp:include page="profileMenu.jsp"></jsp:include>
+    </div>
+    <div class="col" id="wrapper">
     <div class="d-flex flex-column" id="content-wrapper" style="background-color: rgba(248,249,252,0);">
         <div id="content">
             <!--<nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
@@ -130,7 +135,6 @@
             <div class="container-fluid">
                 <div class="d-sm-flex justify-content-between align-items-center mb-4">
                     <h3 class="mb-0" style="color: rgb(207,204,204);">Statistiche generali come sviluppatore</h3>
-                    <!--<a class="btn btn-primary btn-sm d-none d-sm-inline-block" onclick="generatePDF()" type="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Genera Report</a>-->
                     <div class="filter border rounded" id="filter">
                         <form action="/filterDevStats" method="get">
                             <select id="anno" name="anno">
@@ -152,14 +156,14 @@
                                 <div class="row align-items-center no-gutters">
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-primary font-weight-bold text-xs mb-1">
-                                            <span>Media guadagno(annuale)</span>
+                                            <span>Media guadagno</span>
                                         </div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
                                             <span>${averageMoneyEarned}</span>
                                         </div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
                                     </div>
                                 </div>
                             </div>
@@ -171,14 +175,14 @@
                                 <div class="row align-items-center no-gutters">
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-success font-weight-bold text-xs mb-1">
-                                            <span>Media numero giochi venduti(annuale)</span>
+                                            <span>Media numero giochi venduti</span>
                                         </div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
                                             <span>${averageSoldGames}</span>
                                         </div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        <i class="fas fa-wallet fa-2x text-gray-300"></i>
                                     </div>
                                 </div>
                             </div>
@@ -330,7 +334,8 @@
                 </div>-->
             </div>
         </div>
-    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+</div>
 </div>
 <jsp:include page="footer.html" />
 </body>
