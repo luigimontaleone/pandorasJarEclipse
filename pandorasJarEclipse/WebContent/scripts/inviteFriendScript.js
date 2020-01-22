@@ -4,6 +4,7 @@ $(document).ready(()=> {
 
 function sendRequest()
 {
+    alert("here");
     $.post("/inviteFriend?id="+$('#friend-input').val(),
         {},
         function(data){

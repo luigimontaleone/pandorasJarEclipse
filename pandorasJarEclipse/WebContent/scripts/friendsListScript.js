@@ -5,7 +5,7 @@ $(document).ready(()=> {
 
 function searchFriend()
 {
-    $.get("/SearchFriend?id="+$('#search-field').val(),
+    $.get("/SearchListFriend?id="+$('#search-field').val(),
         function (data)
         {
             var friends = JSON.parse(data);

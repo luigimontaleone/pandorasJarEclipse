@@ -32,7 +32,6 @@ public class InviteFriend extends HttpServlet {
             newFriend = Integer.parseInt(req.getParameter("id"));
         }catch(NumberFormatException e)
         {}
-
         if(newFriend != null)
         {
             UserDAO userDao = DAOFactory.getInstance().makeUserDAO();

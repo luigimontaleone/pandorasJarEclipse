@@ -69,7 +69,6 @@ function openComments(post)
     $.get(url,
         function (data)
         {
-            alert(post);
             handleComments(data,post);
         });
 }
