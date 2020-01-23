@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,22 +47,10 @@ public class FormGameUpload extends HttpServlet {
         storeFile(item, gameTitle);
     }
 
-    private void storeGamePreview(FileItem item, String gameTitle) throws Exception {
-        storeFile(item, gameTitle);
-    }
-
-    private void storeGamePreviewImg(FileItem item, String gameTitle) throws Exception {
-        storeFile(item, gameTitle + File.separator + "images");
-    }
-
-    private void storeGamePreviewVideo(FileItem item, String gameTitle) throws Exception {
-        storeFile(item, gameTitle + File.separator + "video");
-    }
-
     private void storeFile(FileItem item, String directory) throws Exception {
         String name = item.getName();
         file = new File(filePath + File.separator + directory + File.separator + name);
-        item.write(file);
+        //item.write(file); SCRITTURA DEL FILE JAR
         this.log("Uploaded: " + file.getName());
     }
 
@@ -71,10 +60,9 @@ public class FormGameUpload extends HttpServlet {
         String specs="";
         double price=0;
         String tag="";
-        FileItem previewImage = null;
-        ArrayList<FileItem> images = new ArrayList<>();
-        ArrayList<FileItem> videos = new ArrayList<>();
-        ArrayList<String> externalLinks = new ArrayList<>();
+        String previewImage = null;
+        ArrayList<String> images = new ArrayList<>();
+        String video = null;
 
         FileItem jarFile = null;
         this.isMultipart = ServletFileUpload.isMultipartContent(req);
@@ -85,15 +73,12 @@ public class FormGameUpload extends HttpServlet {
             for (FileItem i : fileItems) {
                 if (i.getFieldName().equals("gameFile")) {
                     jarFile = i;
-                } else if (i.getFieldName().equals("previewFiles")) {
-                    String contentType = i.getContentType();
-                    if (contentType.contains("image")) {
-                        images.add(i);
-                    } else if (contentType.contains("video")) {
-                        videos.add(i);
-                    }
+                } else if (i.getFieldName().contains("link")) {
+                        images.add(i.getString());
+                } else if (i.getFieldName().equals("previewVideo")) {
+                    video = i.getString();
                 } else if (i.getFieldName().equals("previewImage")) {
-                    previewImage = i;
+                    previewImage = i.getString();
                     this.log("previewImage");
                 } else if (i.getFieldName().equals("name")) {
                     name = i.getString();
@@ -103,8 +88,6 @@ public class FormGameUpload extends HttpServlet {
                     specs = i.getString();
                 } else if (i.getFieldName().equals("price")) {
                     price = Double.parseDouble(i.getString());
-                } else if (i.getFieldName().contains("link")) {
-                    externalLinks.add(i.getString());
                 } else if (i.getFieldName().contains("tag")) {
                     tag = i.getString();
                 }
@@ -116,22 +99,14 @@ public class FormGameUpload extends HttpServlet {
         if (g.getId() == 0) {
             DAOFactory.getInstance().makeGameDAO().insertGame(0, name, (Integer) req.getSession().getAttribute("userId"),
                     tag, (String)req.getSession().getAttribute("helpEmail"), price,
-                    (String)req.getSession().getAttribute("paymentCoords"),description+specs);
+                    (String)req.getSession().getAttribute("paymentCoords"),description+"\n"+specs);
             g = DAOFactory.getInstance().makeGameDAO().getGameByName(name);
-            this.storeGamePreview(previewImage, name);
-            DAOFactory.getInstance().makeGameDAO().insertPreview(g.getId(), previewImage.getName(), true);
+            DAOFactory.getInstance().makeGameDAO().insertPreviewImage(g.getId(), previewImage, true);
             this.storeGameFile(jarFile, name);
-            for (FileItem img : images) {
-                this.storeGamePreviewImg(img, name);
-                DAOFactory.getInstance().makeGameDAO().insertPreview(g.getId(), img.getName(), false);
+            for (String img : images) {
+                DAOFactory.getInstance().makeGameDAO().insertPreviewImage(g.getId(), img, false);
             }
-            for (FileItem video : videos) {
-                this.storeGamePreviewVideo(video, name);
-                DAOFactory.getInstance().makeGameDAO().insertPreview(g.getId(), video.getName(), false);
-            }
-            for (String s : externalLinks){
-                DAOFactory.getInstance().makeGameDAO().insertVideoLink(g.getId(), s);
-            }
+            DAOFactory.getInstance().makeGameDAO().insertPreviewVideo(g.getId(), video);
         }
         return g;
     }
@@ -144,6 +119,11 @@ public class FormGameUpload extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        resp.sendRedirect("/gamePage?id=" + g.getId());
+        resp.sendRedirect("/GameDataSheet?gameId=" + g.getId());
+    }
+
+    private static boolean isVideoFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("video");
     }
 }

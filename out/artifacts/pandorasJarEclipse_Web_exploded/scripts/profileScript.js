@@ -40,7 +40,6 @@ jQuery(document).ready(function(){
 			jQuery("#nameFriend").remove();
 			bool = true;
 		}
-		event.stopPropagation();
 
 	});
 });

@@ -209,7 +209,7 @@ public class GameDAO {
         }
     }
 
-    public void insertPreview(int id, String imageName, boolean front){
+    public void insertPreviewImage(int id, String imageName, boolean front){
         Connection connection = DataSource.getInstance().getConnection();
         String query = "INSERT INTO public.previewimg(idpreview, link, game, front) VALUES(default,?,?,?)";
         try {
@@ -226,7 +226,7 @@ public class GameDAO {
         }
     }
 
-    public void insertVideoLink(int id, String link){
+    public void insertPreviewVideo(int id, String link){
         Connection connection = DataSource.getInstance().getConnection();
         String query = "INSERT INTO public.previewvid(idpreview, link, game) VALUES(default,?,?)";
         try {
