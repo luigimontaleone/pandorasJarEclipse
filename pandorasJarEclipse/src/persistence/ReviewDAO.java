@@ -15,7 +15,8 @@ public class ReviewDAO {
     private final int limit = 3;
     public void addCommentForGame(int id, int stars, String comment, int author, String username){
         Connection connection = DataSource.getInstance().getConnection();
-        String query = "INSERT INTO public.review(idreview, stars, comment, author, game, username) VALUES (default,?,?,?,?,?)";
+        int idRev = getReviewNextId(connection);
+        String query = "INSERT INTO public.review VALUES ('" + idRev + "',?,?,?,?,?)";
         try {
             statement = connection.prepareStatement(query);
             statement.setInt(1, stars);
@@ -33,6 +34,20 @@ public class ReviewDAO {
         }
     }
 
+    private int getReviewNextId(Connection conn)
+    {
+        String query = "SELECT nextval('review_idreview_seq') AS id";
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(query);
+            ResultSet set = stmt.executeQuery();
+            set.next();
+            return set.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     public ArrayList<Review> getReviewsFromIdGame(int id, boolean more)
     {
         Connection connection = DataSource.getInstance().getConnection();

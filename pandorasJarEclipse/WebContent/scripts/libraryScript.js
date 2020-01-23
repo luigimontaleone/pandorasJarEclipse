@@ -1,17 +1,22 @@
 $(document).ready(function () {
-    $("#addComment").click(function (event) {
-        $.ajax({
-            type: "POST",
-            url: "/addComment",
-            data: {
-                content: $("#commentContent").val(),
-                stars: $("#commentStars").val(),
-                game: sessionStorage.getItem("gameID")
-            },
-            success: function () {
-                window.location.reload();
-            }
-        })
+    $("#addComment").click(function () {
+        if($("#commentContent").val() && $("#commentStars").val()) {
+            $.ajax({
+                type: "POST",
+                url: "/addComment",
+                data: {
+                    content: $("#commentContent").val(),
+                    stars: $("#commentStars").val(),
+                    game: $(".formCommenti").attr('id')
+                },
+                success: function () {
+                    window.location.reload();
+                }
+            })
+        }
+        else{
+            alert("Il commento o le stelle non possono essere vuote!");
+        }
     });
     $("#download").click(function (event) {
         window.location.replace("/downloadGame?id=" + sessionStorage.getItem("gameID"));

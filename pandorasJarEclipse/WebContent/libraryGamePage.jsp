@@ -103,17 +103,17 @@
             </div>
             <div class="row" id="fourthRow">
                 <div class="form-group border rounded" id="form-add-comment">
-                    <form>
+                    <form class="formCommenti" id="${gameLibrary.id}">
                         <div class="row margin-auto" id="row-comment">
                             <div class="col">
                                 <textarea class="form-control" id="commentContent" name="content" placeholder="Inserisci qui il tuo commento" required></textarea>
                             </div>
                         </div>
                         <div class="row margin-auto">
-                            <div class="col-4" id="div-label-star">
+                            <div class="iduser col-4" value="${userId}" id="div-label-star">
                                 <label id="insert-stars">Inserisci le tue stelle:</label>
                             </div>
-                            <div class="col-2" id="div-input-star">
+                            <div class="usernameUser col-2" value="${user.username}" id="div-input-star">
                                 <input type="number" min="0" max="5" step="1" class="form-control" id="commentStars"/>
                             </div>
                         </div>
