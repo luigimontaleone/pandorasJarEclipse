@@ -24,12 +24,15 @@ public class Library extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher rd = req.getRequestDispatcher("header.jsp");
-        rd.include(req, resp);
+        RequestDispatcher rd;
         if(req.getSession().getAttribute("logged") == null || !(Boolean) req.getSession().getAttribute("logged")){
-            rd = req.getRequestDispatcher("errorNotLogged.html");
+            rd = req.getRequestDispatcher("notLogged.jsp");
+            rd.forward(req, resp);
+            return;
         }
         else{
+            rd = req.getRequestDispatcher("header.jsp");
+            rd.include(req, resp);
             refreshGame(req);
             rd = req.getRequestDispatcher("library.jsp");
         }
