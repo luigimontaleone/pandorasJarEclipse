@@ -43,7 +43,12 @@
                         <div class="col-md-11 col-lg-6 filtr-item" style="margin: auto;">
                             <div class="card border-dark">
                                 <div class="card-header bg-dark text-light">
-                                    <h5 class="m-0">${post.title}</h5>
+                                    <h5 class="m-0 h5-title">${post.title}</h5>
+                                    <c:if test="${userId == post.authorId}">
+                                        <button type="button" id="deletePost" onclick="deletePost(${post.id})" class="btn btn-danger">
+                                            <i class="far fa-times-circle d-xl-flex justify-content-xl-center align-items-xl-center"></i>
+                                        </button>
+                                    </c:if>
                                 </div>
                                 <img class="img-fluid card-img w-100 d-block rounded-0" src="${post.image}">
                                 <div class="card-body">

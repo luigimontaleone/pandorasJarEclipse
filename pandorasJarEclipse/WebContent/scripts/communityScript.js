@@ -22,7 +22,7 @@ function handlePosts(data)
 
     posts.forEach(function (post)
     {
-        addPost(post);
+        addPost(post, $('#userId').val());
     });
 }
 
@@ -34,18 +34,23 @@ function handleComments(data, post)
     addNewCommentForm(post);
     comments.forEach(function (comment)
     {
-        addComment(comment);
+        addComment(comment, $('#userId').val(), post);
     });
 
 }
 
-function addPost(post)
+function addPost(post, userId)
 {
-    $('#container').append("<div class=\"row filtr-container\">" +
-        "<div class=\"col-md-11 col-lg-6 filtr-item\" style=\"margin: auto;\">\n" +
-        "                <div class=\"card border-dark\">\n" +
-        "                    <div class=\"card-header bg-dark text-light\">\n" +
-        "                        <h5 class=\"m-0\">"+post.title+"</h5>\n" +
+    if(userId != null && userId != undefined && post.authorId == userId)
+    {
+        $('#container').append("<div class=\"row filtr-container\">" +
+            "<div class=\"col-md-11 col-lg-6 filtr-item\" style=\"margin: auto;\">\n" +
+            "                <div class=\"card border-dark\">\n" +
+            "                    <div class=\"card-header bg-dark text-light\">\n" +
+            "                        <h5 class=\"m-0 h5-title\">"+post.title+"</h5> " +
+            "<button type=\"button\" id=\"deletePost\" onclick=\"deletePost("+post.id+")\" class=\"btn btn-danger\">\n" +
+            "        <i class=\"far fa-times-circle d-xl-flex justify-content-xl-center align-items-xl-center\"></i>\n" +
+            "        </button>"+
         "                    </div>\n" +
         "                    <img class=\"img-fluid card-img w-100 d-block rounded-0\" src="+post.image+">\n" +
         "                    <div class=\"card-body\">\n" +
@@ -55,11 +60,34 @@ function addPost(post)
         "                    <div class=\"d-flex card-footer\">\n" +
         "                        <button class=\"btn btn-success btn-sm\" type=\"button\" onclick=\"addLikeDislike("+post.id+",1)\"><i class=\"fas fa-thumbs-up\"></i> "+post.numLike+"</button>\n" +
         "                        <button class=\"btn btn-danger btn-sm ml-auto\" type=\"button\" onclick=\"addLikeDislike("+post.id+",0)\"><i class=\"fas fa-thumbs-down\"></i> "+post.numDislike+"</button>\n" +
-        "                        <button class=\"btn btn-primary btn-sm ml-auto\" type=\"button\"><i class=\"fas fa-comments\"></i> "+post.comments.length+"</button>\n" +
+        "                        <button class=\"btn btn-primary btn-sm ml-auto btn-open-comments\" type=\"button\"><i class=\"fas fa-comments\"></i> "+post.comments.length+"</button>\n" +
         "                    </div>\n" +
         "                </div>\n" +
         "            </div>" +
         "</div>");
+    }
+    else{
+        $('#container').append("<div class=\"row filtr-container\">" +
+            "<div class=\"col-md-11 col-lg-6 filtr-item\" style=\"margin: auto;\">\n" +
+            "                <div class=\"card border-dark\">\n" +
+            "                    <div class=\"card-header bg-dark text-light\">\n" +
+            "                        <h5 class=\"m-0\">"+post.title+"</h5> " +
+        "                    </div>\n" +
+        "                    <img class=\"img-fluid card-img w-100 d-block rounded-0\" src="+post.image+">\n" +
+        "                    <div class=\"card-body\">\n" +
+        "                        <p class=\"card-text\">Autore: <a href=\"/profile?id="+post.authorId+"\">"+post.author+"</a></p>\n" +
+        "                        <p class=\"card-text\">"+post.description+"</p>\n" +
+        "                    </div>\n" +
+        "                    <div class=\"d-flex card-footer\">\n" +
+        "                        <button class=\"btn btn-success btn-sm\" type=\"button\" onclick=\"addLikeDislike("+post.id+",1)\"><i class=\"fas fa-thumbs-up\"></i> "+post.numLike+"</button>\n" +
+        "                        <button class=\"btn btn-danger btn-sm ml-auto\" type=\"button\" onclick=\"addLikeDislike("+post.id+",0)\"><i class=\"fas fa-thumbs-down\"></i> "+post.numDislike+"</button>\n" +
+        "                        <button class=\"btn btn-primary btn-sm ml-auto btn-open-comments\" type=\"button\"><i class=\"fas fa-comments\"></i> "+post.comments.length+"</button>\n" +
+        "                    </div>\n" +
+        "                </div>\n" +
+        "            </div>" +
+        "</div>");
+    }
+
 
 }
 
@@ -94,13 +122,27 @@ function addNewCommentForm(post)
     }
 }
 
-function addComment(comment)
+function addComment(comment, userId, postId)
 {
 
-    $('.modal-content').append("<div class=\"border rounded divComments\">\n" +
-        "                                <label class=\"d-block color-orange\" style=\"font-size: 20px;\"><a href=\"/profile?id="+comment.authorId+"\">"+comment.author+"</a></label>\n" +
-        "                                <p class=\"p-comment\">"+comment.comment+"</p>\n" +
-        "                            </div>");
+    if(userId != null && userId != undefined && userId == comment.authorId)
+    {
+        $('.modal-content').append("<div class=\"border rounded divComments\">\n" +
+            "                                <label class=\"d-block color-orange label-comment\"><a href=\"/profile?id="+comment.authorId+"\">"+comment.author+"</a></label>" +
+            "                                        <button type=\"button\" id=\"deleteComment\" onclick=\"deleteComment("+comment.id+", "+postId+")\" class=\"btn btn-danger btn-delete-comment\">\n" +
+            "                                            <i class=\"far fa-times-circle d-xl-flex justify-content-xl-center align-items-xl-center\"></i>\n" +
+            "                                        </button>\n" +
+            "                                <p class=\"p-comment\">"+comment.comment+"</p>\n" +
+            "                            </div>");
+    }
+    else
+    {
+        $('.modal-content').append("<div class=\"border rounded divComments\">\n" +
+            "                                <label class=\"d-block color-orange\" style=\"font-size: 20px;\"><a href=\"/profile?id="+comment.authorId+"\">"+comment.author+"</a></label>" +
+            "                                <p class=\"p-comment\">"+comment.comment+"</p>\n" +
+            "                            </div>");
+    }
+
 
 
 }
@@ -156,4 +198,24 @@ function addNewComment()
             $('#commento').val("");
         });
 
+}
+
+function deletePost(post)
+{
+    var url = "/DeletePost?id="+post;
+    $.get(url,
+        function (data)
+        {
+            handlePosts(data);
+        });
+}
+
+function deleteComment(comment, post)
+{
+    var url = "/DeleteComment?id="+comment;
+    $.get(url,
+        function (data)
+        {
+            handleComments(data, post);
+        });
 }

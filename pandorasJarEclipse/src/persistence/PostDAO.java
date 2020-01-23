@@ -178,4 +178,34 @@ public class PostDAO {
             DataSource.getInstance().closeConnection();
         }
     }
+
+    public void deletePost(int id) {
+        Connection connection = DataSource.getInstance().getConnection();
+        String query = "DELETE FROM post WHERE id = ?;";
+        try{
+            statement = connection.prepareStatement(query);
+            statement.setInt(1,id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            DataSource.getInstance().closeConnection();
+        }
+    }
+
+    public void deleteComment(int id) {
+        Connection connection = DataSource.getInstance().getConnection();
+        String query = "DELETE FROM comment WHERE id = ?;";
+        try{
+            statement = connection.prepareStatement(query);
+            statement.setInt(1,id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            DataSource.getInstance().closeConnection();
+        }
+    }
 }
