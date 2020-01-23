@@ -33,6 +33,7 @@ public class Upload extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         String paymentCoords = req.getParameter("paymentEmail");
+        req.getSession().setAttribute("email", email);
         req.getSession().setAttribute("helpEmail", email);
         req.getSession().setAttribute("paymentCoords", paymentCoords);
         req.getSession().setAttribute("nextPage", "/formGameUpload");
