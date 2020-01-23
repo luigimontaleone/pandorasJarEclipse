@@ -34,8 +34,6 @@ public class PaymentRegister extends HttpServlet
         Acquisto acquisto = gson.fromJson(json, Acquisto.class);
         DAOFactory.getInstance().makePurchaseDAO().insertNewPurchase(acquisto);
         DAOFactory.getInstance().makeGameDAO().insertNewGameIntoLibrary(acquisto.getIdGame(), acquisto.getIdUser());
-        RequestDispatcher rd = req.getRequestDispatcher("/library");
-        rd.forward(req,resp);
     }
 
     @Override

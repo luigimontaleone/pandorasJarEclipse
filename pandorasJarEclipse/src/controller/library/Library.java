@@ -53,6 +53,11 @@ public class Library extends HttpServlet {
                 ArrayList<Score> scores = factory.makeScoreDAO().getScoresFromIdGame(game.getId());
                 req.setAttribute("ranking", scores);
             }
+            else{
+                rd = req.getRequestDispatcher("zeroGames.jsp");
+                rd.forward(req, resp);
+                return;
+            }
             req.getSession().setAttribute("library", library);
             resp.setCharacterEncoding("UTF-8");
             rd = req.getRequestDispatcher("library.jsp");
