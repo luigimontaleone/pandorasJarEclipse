@@ -33,8 +33,8 @@ public class UserStats extends HttpServlet {
             }
             ArrayList<Pair<Integer, String>> gameScore = DAOFactory.getInstance().makeScoreDAO().getScoresFromIdUser(id);
             Pair<Integer, String> bestScore = new Pair<Integer, String>(0, "");
-            bestScore.setFirst(gameScore.get(0).getFirst());
-            bestScore.setSecond(gameScore.get(0).getSecond());
+            bestScore.setFirst(0);
+            bestScore.setSecond("");
             for (Pair<Integer, String> p : gameScore) {
                 if (p.getFirst() > bestScore.getFirst()) {
                     bestScore.setSecond(p.getSecond());
