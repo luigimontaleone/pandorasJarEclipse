@@ -56,16 +56,16 @@ function send()
         $.post("/sendMessage",
             {
                 data: JSON.stringify({"receiver": receiver, "message": text, "date": currentDate})
-            }, function (dataAltroFormato) {
+            }, function (dataAltroFormato){
                 $('#messages').append("<div class=\"media w-50 ml-auto mb-3\">\n" +
-                    "                        <div style=\"margin-right: 2%; margin-top: 2%;\"class=\"media-body\">\n" +
-                    "                            <div class=\"bg-primary rounded py-2 px-3 mb-2\">\n" +
-                    "                                <p class=\"text-small mb-0 text-white\">" + text + "</p>\n" +
-                    "                            </div>\n" +
-                    "                            <p class=\"small text-muted\">" + dataAltroFormato + "</p>\n" +
-                    "                        </div>\n" +
-                    "                        <img src=\"/PrintImage?id=" + userId + "\" alt=\"user\" width=\"50\" class=\"rounded-circle\">\n" +
-                    "                    </div>");
+                "                        <div style=\"margin-right: 2%; margin-top: 2%;\"class=\"media-body\">\n" +
+                "                            <div class=\"bg-primary rounded py-2 px-3 mb-2\">\n" +
+                "                                <p class=\"text-small mb-0 text-white\">" + text + "</p>\n" +
+                "                            </div>\n" +
+                "                            <p class=\"small text-muted\">" + dataAltroFormato + "</p>\n" +
+                "                        </div>\n" +
+                "                        <img src=\"/PrintImage?id=" + userId + "\" alt=\"user\" width=\"50\" class=\"rounded-circle\">\n" +
+                "                    </div>");
                 $('#typedText').val("");
         });
     }

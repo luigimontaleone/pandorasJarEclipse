@@ -20,17 +20,28 @@ import java.util.Locale;
 public class SendMessage extends HttpServlet
 {
     Gson gson = new Gson();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setStatus(401);
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         String json = req.getParameter("data");
         SentMessage message = gson.fromJson(json, SentMessage.class);
         int userId = (int) req.getSession().getAttribute("userId");
-        DAOFactory.getInstance().makeUserDAO().insertMessage(userId, message);
-        String pattern = "MMM dd, yyyy";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.ENGLISH);
 
-        String date = simpleDateFormat.format(new Date());
-        resp.getWriter().println(date);
+        if(DAOFactory.getInstance().makeUserDAO().insertMessage(userId, message)){
+            String pattern = "MMM dd, yyyy";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.ENGLISH);
+
+            String date = simpleDateFormat.format(new Date());
+            resp.getWriter().println(date);
+        }
+        else{
+            resp.getWriter().println("Errore, non hai ancora amici!");
+        }
     }
 }

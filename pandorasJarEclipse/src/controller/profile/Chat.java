@@ -19,11 +19,17 @@ public class Chat extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        int userId = (int) req.getSession().getAttribute("userId");
-        ArrayList<UserBox> users = DAOFactory.getInstance().makeUserDAO().getUsersBox(userId);
-        users = (ArrayList<UserBox>) users.stream().distinct().collect(Collectors.toList());
-        req.setAttribute("usersBox", users);
-        RequestDispatcher rd = req.getRequestDispatcher("chat.jsp");
-        rd.forward(req, resp);
+        if(req.getSession().getAttribute("userId") != null) {
+            int userId = (int) req.getSession().getAttribute("userId");
+            ArrayList<UserBox> users = DAOFactory.getInstance().makeUserDAO().getUsersBox(userId);
+            users = (ArrayList<UserBox>) users.stream().distinct().collect(Collectors.toList());
+            req.setAttribute("usersBox", users);
+            RequestDispatcher rd = req.getRequestDispatcher("chat.jsp");
+            rd.forward(req, resp);
+        }
+        else{
+            RequestDispatcher rd = req.getRequestDispatcher("notLogged.jsp");
+            rd.forward(req, resp);
+        }
     }
 }

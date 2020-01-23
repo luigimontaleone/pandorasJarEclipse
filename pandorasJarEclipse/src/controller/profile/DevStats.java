@@ -18,29 +18,34 @@ public class DevStats extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        int idUser = (int) req.getSession().getAttribute("userId");
-        SoldGames tempSG = DAOFactory.getInstance().makePurchaseDAO().getSoldGamesFromIdUser(idUser);
-        TreeMap<Integer, Integer> soldGPerYear = tempSG.getSoldGPerYear();
-        TreeMap<Integer, Double> earnedMoneyPerYear = tempSG.getEarnedMoneyPerYear();
-        double averageSoldGames = 0;
-        double averageMoneyEarned = 0;
-        for(Integer year : soldGPerYear.keySet())
-        {
-            averageSoldGames += soldGPerYear.get(year);
-            averageMoneyEarned += earnedMoneyPerYear.get(year);
+        if(req.getSession().getAttribute("userId") != null) {
+            int idUser = (int) req.getSession().getAttribute("userId");
+            SoldGames tempSG = DAOFactory.getInstance().makePurchaseDAO().getSoldGamesFromIdUser(idUser);
+            TreeMap<Integer, Integer> soldGPerYear = tempSG.getSoldGPerYear();
+            TreeMap<Integer, Double> earnedMoneyPerYear = tempSG.getEarnedMoneyPerYear();
+            double averageSoldGames = 0;
+            double averageMoneyEarned = 0;
+            for (Integer year : soldGPerYear.keySet()) {
+                averageSoldGames += soldGPerYear.get(year);
+                averageMoneyEarned += earnedMoneyPerYear.get(year);
+            }
+            averageSoldGames /= soldGPerYear.keySet().size();
+            averageMoneyEarned /= earnedMoneyPerYear.keySet().size();
+            req.getSession().setAttribute("soldGameKeys", soldGPerYear.keySet());
+            req.getSession().setAttribute("soldGameValues", soldGPerYear.values());
+
+            req.getSession().setAttribute("moneyEarnedKeys", earnedMoneyPerYear.keySet());
+            req.getSession().setAttribute("moneyEarnedValues", earnedMoneyPerYear.values());
+
+            req.getSession().setAttribute("averageSoldGames", averageSoldGames);
+            req.getSession().setAttribute("averageMoneyEarned", averageMoneyEarned);
+
+            RequestDispatcher rd = req.getRequestDispatcher("newDevStats.jsp");
+            rd.forward(req, resp);
         }
-        averageSoldGames /= soldGPerYear.keySet().size();
-        averageMoneyEarned /= earnedMoneyPerYear.keySet().size();
-        req.getSession().setAttribute("soldGameKeys", soldGPerYear.keySet());
-        req.getSession().setAttribute("soldGameValues", soldGPerYear.values());
-
-        req.getSession().setAttribute("moneyEarnedKeys", earnedMoneyPerYear.keySet());
-        req.getSession().setAttribute("moneyEarnedValues", earnedMoneyPerYear.values());
-
-        req.getSession().setAttribute("averageSoldGames", averageSoldGames);
-        req.getSession().setAttribute("averageMoneyEarned", averageMoneyEarned);
-
-        RequestDispatcher rd = req.getRequestDispatcher("newDevStats.jsp");
-        rd.forward(req, resp);
+        else{
+            RequestDispatcher rd = req.getRequestDispatcher("notLogged.jsp");
+            rd.forward(req, resp);
+        }
     }
 }

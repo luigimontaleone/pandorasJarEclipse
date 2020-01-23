@@ -10,8 +10,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <jsp:include page="header.jsp" />
-    <h1>You're not logged, please do the login</h1>
-    <jsp:include page="footer.html" />
+<jsp:include page="header.jsp" />
+    <div style="height: 100vh; margin-top: 3%; margin-bottom: 3%; text-align: center; font-weight: bold; font-family:Courier New;">
+        <h1>Non sei loggato, effettua il login!</h1>
+    </div>
+<jsp:include page="footer.html" />
 </body>
 </html>

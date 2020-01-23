@@ -37,4 +37,9 @@ public class PaymentRegister extends HttpServlet
         RequestDispatcher rd = req.getRequestDispatcher("/library");
         rd.forward(req,resp);
     }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setStatus(401);
+    }
 }

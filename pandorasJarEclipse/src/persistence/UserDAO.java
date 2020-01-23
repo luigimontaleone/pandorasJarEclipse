@@ -291,20 +291,23 @@ public class UserDAO {
         }
         return 0;
     }
-    public void insertMessage(int userId, SentMessage message)
+    public boolean insertMessage(int userId, SentMessage message)
     {
         Connection connection = DataSource.getInstance().getConnection();
         message.setSender(userId);
         message.setIdmessage(getMessageNextId(connection));
-        System.out.println(message);
+        if(message.getReceiver() == 0)
+            return false;
         String query = "INSERT INTO public.messages values('" + userId + "','" + message.getReceiver() + "','" + message.getMessage() + "','" + message.getDate() + "','" + message.getIdmessage() + "');";
         try
         {
             statement = connection.prepareStatement(query);
             statement.executeUpdate();
+            return true;
         } catch (SQLException e)
         {
             e.printStackTrace();
+            return false;
         }
         finally
         {

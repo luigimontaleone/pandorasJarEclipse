@@ -16,7 +16,7 @@ import java.io.IOException;
 public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setStatus(403); // Permission denied, only POST here
+        resp.setStatus(401); // Permission denied, only POST here
     }
 
     @Override

@@ -19,6 +19,11 @@ public class LoadChat extends HttpServlet
     Gson gson = new Gson();
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setStatus(401);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         int userId = (int) req.getSession().getAttribute("userId");

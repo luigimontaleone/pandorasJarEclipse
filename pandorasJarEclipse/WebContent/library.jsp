@@ -7,9 +7,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="css/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
     <script src="scripts/library.js"></script>
+    <link rel="stylesheet" href="css/libraryStyle.css">
 </head>
 <body>
-    <div class="row">
+    <div id="firstRow" class="row">
         <c:if test="${user.getLibrary().size() == 0}">
             <h1>La tua libreria è vuota: compra qualcosa <a href="/">qui!</a></h1>
         </c:if>

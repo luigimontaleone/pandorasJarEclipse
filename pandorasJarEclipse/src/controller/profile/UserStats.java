@@ -19,45 +19,48 @@ import java.util.*;
 public class UserStats extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = (int) req.getSession().getAttribute("userId");
-        float totalHours = 0f;
-        TreeMap<Integer, Integer> hoursPlayedYear = DAOFactory.getInstance().makeHoursPlayedDAO().getHoursPlayedFromIdUser(id);
-        for(Integer year: hoursPlayedYear.keySet())
-        {
-            totalHours += hoursPlayedYear.get(year);
-        }
-        TreeMap<Integer, Integer> gamesPlayedYear = DAOFactory.getInstance().makePurchaseDAO().getGamesYearFromIdUser(id);
-        int totalGames = 0;
-        for(Integer year: gamesPlayedYear.keySet())
-        {
-            totalGames += gamesPlayedYear.get(year);
-        }
-        ArrayList<Pair<Integer, String>> gameScore = DAOFactory.getInstance().makeScoreDAO().getScoresFromIdUser(id);
-        Pair<Integer, String> bestScore = new Pair<Integer, String>(0,"");
-        bestScore.setFirst(gameScore.get(0).getFirst());
-        bestScore.setSecond(gameScore.get(0).getSecond());
-        for(Pair<Integer,String> p: gameScore)
-        {
-            if(p.getFirst() > bestScore.getFirst())
-            {
-                bestScore.setSecond(p.getSecond());
-                bestScore.setFirst(p.getFirst());
+        if(req.getSession().getAttribute("userId") != null) {
+            int id = (int) req.getSession().getAttribute("userId");
+            float totalHours = 0f;
+            TreeMap<Integer, Integer> hoursPlayedYear = DAOFactory.getInstance().makeHoursPlayedDAO().getHoursPlayedFromIdUser(id);
+            for (Integer year : hoursPlayedYear.keySet()) {
+                totalHours += hoursPlayedYear.get(year);
             }
+            TreeMap<Integer, Integer> gamesPlayedYear = DAOFactory.getInstance().makePurchaseDAO().getGamesYearFromIdUser(id);
+            int totalGames = 0;
+            for (Integer year : gamesPlayedYear.keySet()) {
+                totalGames += gamesPlayedYear.get(year);
+            }
+            ArrayList<Pair<Integer, String>> gameScore = DAOFactory.getInstance().makeScoreDAO().getScoresFromIdUser(id);
+            Pair<Integer, String> bestScore = new Pair<Integer, String>(0, "");
+            bestScore.setFirst(gameScore.get(0).getFirst());
+            bestScore.setSecond(gameScore.get(0).getSecond());
+            for (Pair<Integer, String> p : gameScore) {
+                if (p.getFirst() > bestScore.getFirst()) {
+                    bestScore.setSecond(p.getSecond());
+                    bestScore.setFirst(p.getFirst());
+                }
+            }
+            req.getSession().setAttribute("hoursPlayedKeys", hoursPlayedYear.keySet());
+            req.getSession().setAttribute("hoursPlayedValues", hoursPlayedYear.values());
+
+            req.getSession().setAttribute("totalHoursPlayed", totalHours);
+
+            req.getSession().setAttribute("gamesPlayedKeys", gamesPlayedYear.keySet());
+            req.getSession().setAttribute("gamesPlayedValues", gamesPlayedYear.values());
+
+            req.getSession().setAttribute("totalGamesPlayed", totalGames);
+
+            req.getSession().setAttribute("bestScoreName", bestScore.getSecond());
+            req.getSession().setAttribute("bestScoreValue", bestScore.getFirst());
+
+            RequestDispatcher rd = req.getRequestDispatcher("newUserStats.jsp");
+            rd.forward(req, resp);
         }
-        req.getSession().setAttribute("hoursPlayedKeys", hoursPlayedYear.keySet());
-        req.getSession().setAttribute("hoursPlayedValues", hoursPlayedYear.values());
-
-        req.getSession().setAttribute("totalHoursPlayed", totalHours);
-
-        req.getSession().setAttribute("gamesPlayedKeys", gamesPlayedYear.keySet());
-        req.getSession().setAttribute("gamesPlayedValues", gamesPlayedYear.values());
-
-        req.getSession().setAttribute("totalGamesPlayed", totalGames);
-
-        req.getSession().setAttribute("bestScoreName", bestScore.getSecond());
-        req.getSession().setAttribute("bestScoreValue", bestScore.getFirst());
-
-        RequestDispatcher rd = req.getRequestDispatcher("newUserStats.jsp");
-        rd.forward(req,resp);
+        else{
+            RequestDispatcher rd = req.getRequestDispatcher("notLogged.jsp");
+            rd.forward(req, resp);
+        }
     }
+
 }

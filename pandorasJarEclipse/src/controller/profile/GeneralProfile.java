@@ -21,15 +21,6 @@ public class GeneralProfile extends HttpServlet{
 		if(req.getSession().getAttribute("userId") != null){
 			idUser = (int) req.getSession().getAttribute("userId");
 			principale = DAOFactory.getInstance().makeUserDAO().getUserByIdUser(idUser);
-			req.setAttribute("canSee", true);
-		}
-		else if(req.getParameter("id") != null)
-		{
-			req.setAttribute("canSee", true);
-		}
-		else
-		{
-			req.setAttribute("canSee", false);
 		}
 
 		if(req.getParameter("id") == null || (idUser != null && Integer.parseInt(req.getParameter("id")) == idUser))
