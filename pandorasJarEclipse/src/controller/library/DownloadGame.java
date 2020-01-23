@@ -23,7 +23,6 @@ public class DownloadGame extends HttpServlet {
         //System.out.println(directory);
         String filePath = "";
         File f = new File(directory);
-        System.out.println(f.exists());
         for (File e: f.listFiles()) {
             if (e.getName().contains(".jar")){
                 filePath = e.getAbsolutePath();

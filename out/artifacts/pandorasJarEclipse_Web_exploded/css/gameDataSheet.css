@@ -55,7 +55,7 @@
 
 #prezzo{
     color: rgb(207,204,204);
-    size: 40px;
+    font-size: 20px;
     padding-top: 5%;
     font-weight: bold;
 }

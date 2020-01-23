@@ -23,9 +23,7 @@
             </div>
             <div class="form-group"><textarea class="form-control not-resize" name="specs"
                                               placeholder="Inserisci le specifiche tecniche del gioco"></textarea></div>
-            <div class="form-group text-center"><label
-                    class="text-monospace text-center text-sm-center text-md-center text-lg-center text-xl-center">Seleziona
-                il file JAR del gioco</label></div>
+            <div class="form-group text-center"><label class="text-monospace text-center text-sm-center text-md-center text-lg-center text-xl-center">Seleziona il file JAR del gioco</label></div>
             <div class="form-group text-center"><input type="file" name="gameFile" required=""></div>
             <div class="form-group text-center">
                 <label class="text-monospace">Inserisci il link dell'immagine copertina del gioco</label>
@@ -44,8 +42,9 @@
             </div>
             <div class="form-group text-center">
                 <div class="form-row">
-                    <div class="col"><input class="form-control" type="text" name="link-1"
-                                            placeholder="Inserisci un link esterno. (es. youtube)"></div>
+                    <div class="col">
+                        <input class="form-control" type="text" name="link-1" placeholder="Inserisci un link esterno. (es. youtube)">
+                    </div>
                     <div class="col-1">
                         <button id="btn-add-link" class="btn btn-success" type="button" onclick="addRow(event)">+
                         </button>

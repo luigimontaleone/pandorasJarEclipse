@@ -85,7 +85,7 @@
         </div>
         <div class="col float-left" style="width: 40%;">
             <div class="float-left">
-                <p id="prezzo"> PREZZO: ${game.price}€</p>
+                <p id="prezzo">PREZZO: ${game.price}€</p>
             </div>
             <c:if test="${logged}">
                 <c:if test="${canBuy}">
@@ -131,6 +131,9 @@
                                 $.post("/PaymentSuccess",
                                     {
                                         data:JSON.stringify({idUser: ${userId}, idGame: ${game.id}, price: ${game.price}})
+                                    },
+                                    function () {
+                                        window.location.replace("/library");
                                     });
                             });
                         }

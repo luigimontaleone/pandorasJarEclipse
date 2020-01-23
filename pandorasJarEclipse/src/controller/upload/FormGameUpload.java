@@ -63,9 +63,9 @@ public class FormGameUpload extends HttpServlet {
         String specs="";
         double price=0;
         String tag="";
-        String previewImage = null;
+        String previewImage = "";
         ArrayList<String> images = new ArrayList<>();
-        String video = null;
+        String video = "";
 
         FileItem jarFile = null;
         this.isMultipart = ServletFileUpload.isMultipartContent(req);
@@ -104,12 +104,19 @@ public class FormGameUpload extends HttpServlet {
                     tag, (String)req.getSession().getAttribute("helpEmail"), price,
                     (String)req.getSession().getAttribute("paymentCoords"),description+"\n"+specs);
             g = DAOFactory.getInstance().makeGameDAO().getGameByName(name);
-            DAOFactory.getInstance().makeGameDAO().insertPreviewImage(g.getId(), previewImage, true);
+            if(previewImage != "") {
+                DAOFactory.getInstance().makeGameDAO().insertPreviewImage(g.getId(), previewImage, true);
+            }
             this.storeGameFile(jarFile, name);
             for (String img : images) {
-                DAOFactory.getInstance().makeGameDAO().insertPreviewImage(g.getId(), img, false);
+                if(img != "")
+                {
+                    DAOFactory.getInstance().makeGameDAO().insertPreviewImage(g.getId(), img, false);
+                }
             }
-            DAOFactory.getInstance().makeGameDAO().insertPreviewVideo(g.getId(), video);
+            if(video != "")
+                DAOFactory.getInstance().makeGameDAO().insertPreviewVideo(g.getId(), video);
+            DAOFactory.getInstance().makeGameDAO().insertNewGameIntoLibrary(g.getId(),g.getIdDeveloper());
         }
         return g;
     }

@@ -18,10 +18,14 @@ $(document).ready(function () {
             alert("Il commento o le stelle non possono essere vuote!");
         }
     });
-    $("#download").click(function (event) {
-        window.location.replace("/downloadGame?id=" + sessionStorage.getItem("gameID"));
-    })
+
 });
+
+function downloadGame(game)
+{
+    window.location.replace("/downloadGame?id="+game);
+}
+
 
 function addMoreRev(game)
 {
