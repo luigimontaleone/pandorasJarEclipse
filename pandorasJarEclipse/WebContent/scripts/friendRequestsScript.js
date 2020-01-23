@@ -54,7 +54,6 @@ function addReceivedRequest(request)
 
 function addSentRequest(request)
 {
-    alert(request);
     $('#tbody-sent').append("<tr class=\"tr-color-sent\">\n" +
         "                                    <td>"+request.id+"</td>\n" +
         "                                    <td>"+request.username+"</td>\n" +
@@ -75,7 +74,6 @@ function deleteRequestFriend(id)
             $('.tr-color-sent').remove();
             requests.forEach(function (request)
             {
-                alert("ciao2");
                 addSentRequest(request);
             });
         });

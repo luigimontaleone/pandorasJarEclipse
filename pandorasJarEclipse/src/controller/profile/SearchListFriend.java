@@ -24,9 +24,9 @@ public class SearchListFriend extends HttpServlet {
         catch(NumberFormatException e)
         {}
         ArrayList<User> friends = (ArrayList<User>) req.getSession().getAttribute("friends");
-        if(idFriend != null)
+        if(friends != null && !friends.isEmpty())
         {
-            if(friends != null)
+            if(idFriend != null)
             {
                 for(User u: friends)
                 {
@@ -39,15 +39,16 @@ public class SearchListFriend extends HttpServlet {
                         break;
                     }
                 }
-            }
 
+            }
+            else
+            {
+                String jsonSend = gson.toJson(friends);
+                resp.setCharacterEncoding("UTF-8");
+                resp.getWriter().println(jsonSend);
+                resp.getWriter().flush();
+            }
         }
-        else
-        {
-            String jsonSend = gson.toJson(friends);
-            resp.setCharacterEncoding("UTF-8");
-            resp.getWriter().println(jsonSend);
-            resp.getWriter().flush();
-        }
+
     }
 }

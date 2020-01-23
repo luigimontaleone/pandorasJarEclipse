@@ -30,14 +30,10 @@ public class SearchRequests extends HttpServlet {
             requests = (ArrayList<User>) req.getSession().getAttribute("receivedRequests");
         else if(received != null && received == 0)
             requests = (ArrayList<User>) req.getSession().getAttribute("sentRequests");
-        if(id != null)
-        {
-            if(requests != null)
-            {
-                for(User u: requests)
-                {
-                    if(u.getId() == id)
-                    {
+        if(requests != null && !requests.isEmpty()) {
+            if (id != null) {
+                for (User u : requests) {
+                    if (u.getId() == id) {
                         String jsonSend = gson.toJson(u);
                         resp.setCharacterEncoding("UTF-8");
                         resp.getWriter().println(jsonSend);
@@ -45,15 +41,12 @@ public class SearchRequests extends HttpServlet {
                         break;
                     }
                 }
+            } else {
+                String jsonSend = gson.toJson(requests);
+                resp.setCharacterEncoding("UTF-8");
+                resp.getWriter().println(jsonSend);
+                resp.getWriter().flush();
             }
-
-        }
-        else
-        {
-            String jsonSend = gson.toJson(requests);
-            resp.setCharacterEncoding("UTF-8");
-            resp.getWriter().println(jsonSend);
-            resp.getWriter().flush();
         }
     }
 }
