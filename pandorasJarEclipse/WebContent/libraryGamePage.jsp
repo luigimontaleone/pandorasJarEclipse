@@ -78,7 +78,7 @@
             </div>
             <div class="row" id="secondRow">
                 <div class="col-xl-7" style="width: 60%;">
-                    <p class="d-inline" id="pCategory">Questo gioco appartiene alla categoria :</p><!--<a href="/?category=${gameLibrary.category}" style="font-size: 20px;">-->${gameLibrary.category}<!--</a>-->
+                    <p class="d-inline" id="pCategory">Questo gioco appartiene alla categoria :</p><a href="/SearchFilterIndex?categoria=${gameLibrary.category}&prezzo=&valutazione=" style="font-size: 20px;">${gameLibrary.category}</a>
                 </div>
                 <div class="col float-left" style="width: 40%;">
                     <div class="float-left">

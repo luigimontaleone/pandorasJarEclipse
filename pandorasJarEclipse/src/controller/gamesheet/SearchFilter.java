@@ -31,7 +31,6 @@ public class SearchFilter extends HttpServlet {
         }catch(NumberFormatException e)
         {
         }
-        System.out.println(prezzo);
         String valutazione = filter.getValutazione();
         ArrayList<Game> newGames = new ArrayList<Game>();
         if(games != null)
@@ -40,7 +39,6 @@ public class SearchFilter extends HttpServlet {
             {
                 String categoriaGioco = g.getCategory();
                 double prezzoGioco = g.getPrice();
-                System.out.println(prezzoGioco);
                 String valutazioneGioco = DAOFactory.getInstance().makeReviewDAO().getValutazioneMediaGioco(g.getId());
                 if(categoria.equals("") || categoriaGioco.equals(categoria))
                 {

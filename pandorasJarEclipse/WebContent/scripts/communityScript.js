@@ -60,7 +60,7 @@ function addPost(post, userId)
         "                    <div class=\"d-flex card-footer\">\n" +
         "                        <button class=\"btn btn-success btn-sm\" type=\"button\" onclick=\"addLikeDislike("+post.id+",1)\"><i class=\"fas fa-thumbs-up\"></i> "+post.numLike+"</button>\n" +
         "                        <button class=\"btn btn-danger btn-sm ml-auto\" type=\"button\" onclick=\"addLikeDislike("+post.id+",0)\"><i class=\"fas fa-thumbs-down\"></i> "+post.numDislike+"</button>\n" +
-        "                        <button class=\"btn btn-primary btn-sm ml-auto btn-open-comments\" type=\"button\"><i class=\"fas fa-comments\"></i> "+post.comments.length+"</button>\n" +
+        "                        <button class=\"btn btn-primary btn-sm ml-auto btn-open-comments\" onclick=\"openComments("+post.id+")\" type=\"button\"><i class=\"fas fa-comments\"></i> "+post.comments.length+"</button>\n" +
         "                    </div>\n" +
         "                </div>\n" +
         "            </div>" +
@@ -81,13 +81,14 @@ function addPost(post, userId)
         "                    <div class=\"d-flex card-footer\">\n" +
         "                        <button class=\"btn btn-success btn-sm\" type=\"button\" onclick=\"addLikeDislike("+post.id+",1)\"><i class=\"fas fa-thumbs-up\"></i> "+post.numLike+"</button>\n" +
         "                        <button class=\"btn btn-danger btn-sm ml-auto\" type=\"button\" onclick=\"addLikeDislike("+post.id+",0)\"><i class=\"fas fa-thumbs-down\"></i> "+post.numDislike+"</button>\n" +
-        "                        <button class=\"btn btn-primary btn-sm ml-auto btn-open-comments\" type=\"button\"><i class=\"fas fa-comments\"></i> "+post.comments.length+"</button>\n" +
+        "                        <button class=\"btn btn-primary btn-sm ml-auto btn-open-comments\" onclick=\"openComments("+post.id+")\" type=\"button\"><i class=\"fas fa-comments\"></i> "+post.comments.length+"</button>\n" +
         "                    </div>\n" +
         "                </div>\n" +
         "            </div>" +
         "</div>");
     }
-
+    $(".btn-open-comments").attr("href", "#commentsList");
+    $(".btn-open-comments").attr("data-toggle", "modal");
 
 }
 
@@ -124,6 +125,7 @@ function addNewCommentForm(post)
 
 function addComment(comment, userId, postId)
 {
+    alert("here3");
 
     if(userId != null && userId != undefined && userId == comment.authorId)
     {
