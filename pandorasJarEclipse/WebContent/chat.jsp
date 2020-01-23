@@ -17,7 +17,12 @@
 </head>
 
 <body>
-<div class="bootstrap_chat">
+<jsp:include page="header.jsp" />
+<div class="row" id="firstRow">
+    <div class="col-3" id="divProfileMenu">
+        <jsp:include page="profileMenu.jsp"></jsp:include>
+    </div>
+    <div class="col bootstrap_chat">
     <div class="container py-5 px-4">
         <!-- For demo purpose-->
         <header class="text-center">
@@ -76,5 +81,7 @@
         </div>
     </div>
 </div>
+</div>
+<jsp:include page="footer.html" />
 </body>
 </html>
