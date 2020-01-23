@@ -82,7 +82,7 @@
                 </div>
                 <div class="col float-left" style="width: 40%;">
                     <div class="float-left">
-                        <p id="prezzo"> PREZZO: ${gameLibrary.price}€</p>
+                        <p id="prezzo">ACQUISTATO PER: ${gameLibrary.price}€</p>
                     </div>
                     <div class ="float-right">
                         <button id="download" class="btn btn-success">Download!</button>

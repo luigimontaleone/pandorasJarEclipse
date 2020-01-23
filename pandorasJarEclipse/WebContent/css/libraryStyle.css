@@ -17,6 +17,10 @@
     width:100%;
 }
 
+#prezzo{
+    font-size: 20px;
+    font-weight: bold;
+}
 .th-color {
     color: rgb(255,165,0);
 }

@@ -39,7 +39,7 @@ public class DevStats extends HttpServlet
 
             req.getSession().setAttribute("averageSoldGames", averageSoldGames);
             req.getSession().setAttribute("averageMoneyEarned", averageMoneyEarned);
-
+            req.setAttribute("meseAnno", "anno");
             RequestDispatcher rd = req.getRequestDispatcher("newDevStats.jsp");
             rd.forward(req, resp);
         }

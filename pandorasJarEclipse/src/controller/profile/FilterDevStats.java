@@ -46,7 +46,7 @@ public class FilterDevStats extends HttpServlet
 
             req.getSession().setAttribute("averageSoldGames", averageSoldGames);
             req.getSession().setAttribute("averageMoneyEarned", averageMoneyEarned);
-
+            req.setAttribute("meseAnno", "mese");
             RequestDispatcher rd = req.getRequestDispatcher("newDevStats.jsp");
             rd.forward(req, resp);
         }

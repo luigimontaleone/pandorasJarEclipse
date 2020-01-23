@@ -17,11 +17,7 @@
         <div class="col-3" id="divLibraryMenu">
             <jsp:include page="libraryList.jsp"></jsp:include>
         </div>
-        <c:if test="${user.getLibrary().size() == 0}">
-
-        </c:if>
         <c:if test="${user.getLibrary().size() != 0}">
-
             <div id="gameDetails" class="col-9">
                 <jsp:include page="libraryGamePage.jsp"></jsp:include>
             </div>
