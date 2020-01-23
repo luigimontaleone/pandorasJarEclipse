@@ -13,12 +13,15 @@ import java.io.PrintWriter;
 public class Upload extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("header.jsp");
-        requestDispatcher.include(req, resp);
+        RequestDispatcher requestDispatcher;
         if(req.getSession().getAttribute("logged") == null || !(Boolean) req.getSession().getAttribute("logged")){
-            requestDispatcher = req.getRequestDispatcher("errorNotLogged.html");
+            requestDispatcher = req.getRequestDispatcher("notLogged.jsp");
+            requestDispatcher.forward(req, resp);
+            return;
         }
         else{
+            requestDispatcher = req.getRequestDispatcher("header.jsp");
+            requestDispatcher.include(req, resp);
             requestDispatcher = req.getRequestDispatcher("upload.html");
         }
         requestDispatcher.include(req, resp);
