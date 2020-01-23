@@ -1,18 +1,21 @@
 .login-dark {
-  height: 1000px;
+  //height: 1000px;
+  height: 80vh;
   background-size: cover;
   position: relative;
 }
 
 .login-dark form {
-  max-width: 320px;
-  width: 90%;
+  //max-width: 320px;
+  //width: 90%;
+  width: 70%;
   background-color: #1e2833;
   padding: 40px;
   border-radius: 4px;
   transform: translate(-50%, -50%);
   position: absolute;
-  top: 30%;
+  //top: 30%;
+  top: 40%;
   left: 50%;
   color: #fff;
   box-shadow: 3px 3px 4px rgba(0,0,0,0.2);

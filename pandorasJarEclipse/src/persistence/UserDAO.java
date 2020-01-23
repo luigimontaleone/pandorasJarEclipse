@@ -13,45 +13,26 @@ import java.util.ArrayList;
 public class UserDAO {
     private PreparedStatement statement;
 
-    public ArrayList<Game> refreshLibrary(User u){
-        try {
-            return this.getGames(DataSource.getInstance().getConnection(), u);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            DataSource.getInstance().closeConnection();
-        }
-        return null;
-    }
-
-    private ArrayList<Game> getGames(Connection connection, User user) throws SQLException{
+    private ArrayList<Game> getGames(Connection connection, int user) throws SQLException{
         ArrayList<Game> games = new ArrayList<>();
-        String query = "SELECT g.* FROM public.libreria as l, public.game as g WHERE l.idgame = g.idgame AND l.iduser = ?";
+        String query = "SELECT l.idgame FROM public.libreria as l WHERE l.iduser = ?";
         statement = connection.prepareStatement(query);
-        statement.setInt(1, user.getId());
+        statement.setInt(1, user);
         ResultSet rs = statement.executeQuery();
         while (rs.next()){
             Game g = new Game();
-            g.setId(rs.getInt("idgame"));
-            g.setName(rs.getString("name"));
-            g.setIdDeveloper(rs.getInt("developer"));
-            g.setCategory(rs.getString("category"));
-            g.setHelpEmail(rs.getString("helpemail"));
-            g.setPrice(rs.getDouble("price"));
-            g.setPayment(rs.getString("paymentscoord"));
-            g.setDescription(rs.getString("description"));
-            g.setRelease(rs.getDate("release"));
+            g = DAOFactory.getInstance().makeGameDAO().getGameFromIdWithPreviews(rs.getInt("idgame"));
             g.setReviews(DAOFactory.getInstance().makeReviewDAO().getReviewsFromIdGame(rs.getInt("idgame"), false));
             games.add(g);
         }
         return games;
     }
 
-    private ArrayList<User> getFriends(Connection connection, User user) throws SQLException{
+    private ArrayList<User> getFriends(Connection connection, int user) throws SQLException{
         ArrayList<User> friends = new ArrayList<User>();
         String query = "SELECT u.* FROM public.user as u, public.user_friend as uf WHERE uf.iduser1 = ?::integer and u.iduser = uf.iduser2";
         statement = connection.prepareStatement(query);
-        statement.setString(1,Integer.toString(user.getId()));
+        statement.setString(1,Integer.toString(user));
         ResultSet rs = statement.executeQuery();
         if(rs.isClosed())
             return null;
@@ -82,8 +63,8 @@ public class UserDAO {
             user.setPassword(rs.getString("password"));
             user.setImage(rs.getBytes("image"));
         }
-        user.setFriends(this.getFriends(connection,user));
-        user.setLibrary(this.getGames(connection, user));
+        user.setFriends(this.getFriends(connection,user.getId()));
+        user.setLibrary(this.getGames(connection, user.getId()));
         return user;
     }
 
@@ -336,6 +317,17 @@ public class UserDAO {
             e.printStackTrace();
         }
         finally{
+            DataSource.getInstance().closeConnection();
+        }
+        return null;
+    }
+
+    public ArrayList<Game> getLibrary(Integer userId) {
+        try {
+            return this.getGames(DataSource.getInstance().getConnection(), userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
             DataSource.getInstance().closeConnection();
         }
         return null;

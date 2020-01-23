@@ -20,7 +20,7 @@ public class LoadMoreRevs extends HttpServlet
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         ArrayList<Review> moreReviews = DAOFactory.getInstance().makeReviewDAO().getReviewsFromIdGame
-                (Integer.valueOf(req.getParameter("gameId")), true);
+                (Integer.parseInt(req.getParameter("gameId")), true);
         String json = gson.toJson(moreReviews);
         resp.setCharacterEncoding("UTF-8");
         resp.getWriter().println(json);

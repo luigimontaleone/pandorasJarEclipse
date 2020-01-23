@@ -26,7 +26,7 @@ $(document).ready(()=>{
                         "</blockquote>")
                 }
             });
-    })
+    });
 
 });
 

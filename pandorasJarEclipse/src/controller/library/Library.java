@@ -1,6 +1,8 @@
 package controller.library;
 
 import model.Game;
+import model.Review;
+import model.Score;
 import model.User;
 import persistence.DAOFactory;
 
@@ -11,16 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(value = "/library", name = "library")
 public class Library extends HttpServlet {
-
-    private void refreshGame(HttpServletRequest req){
-        User u = (User) req.getSession().getAttribute("user");
-        u.setLibrary(DAOFactory.getInstance().makeUserDAO().refreshLibrary(u));
-        this.log(String.valueOf(u.getLibrary()));
-        req.getSession().setAttribute("user",u);
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,14 +27,37 @@ public class Library extends HttpServlet {
             return;
         }
         else{
-            rd = req.getRequestDispatcher("header.jsp");
-            rd.include(req, resp);
-            refreshGame(req);
+            Integer gameId = null;
+            try{
+                gameId = Integer.parseInt(req.getParameter("id"));
+            }catch (NumberFormatException e)
+            {}
+            Integer userId = (Integer) req.getSession().getAttribute("userId");
+            ArrayList<Game> library = DAOFactory.getInstance().makeUserDAO().getLibrary(userId);
+            if(!library.isEmpty()) {
+                DAOFactory factory = DAOFactory.getInstance();
+                Game game = library.get(0);
+                if(gameId != null) {
+                    game = factory.makeGameDAO().getGameFromIdWithPreviews(gameId);
+                    game.setReviews(DAOFactory.getInstance().makeReviewDAO().getReviewsFromIdGame(gameId, false));
+                }
+                req.getSession().setAttribute("gameLibrary", game);
+                ArrayList<Integer> totalSize = new ArrayList<Integer>();
+                for(int i = 0; i < game.getPreviewsVID().size()+game.getPreviewsIMG().size();i++)
+                    totalSize.add(i);
+                req.setAttribute("totalSize", totalSize);
+                String usernameDeveloper = factory.makeUserDAO().getUserByIdUser(game.getIdDeveloper()).getUsername();
+                req.setAttribute("developer", usernameDeveloper);
+                ArrayList<Review> reviews = factory.makeReviewDAO().getReviewsFromIdGame(game.getId(), false);
+                req.setAttribute("reviews", reviews);
+                ArrayList<Score> scores = factory.makeScoreDAO().getScoresFromIdGame(game.getId());
+                req.setAttribute("ranking", scores);
+            }
+            req.getSession().setAttribute("library", library);
+            resp.setCharacterEncoding("UTF-8");
             rd = req.getRequestDispatcher("library.jsp");
+            rd.forward(req, resp);
         }
-        rd.include(req, resp);
-        rd = req.getRequestDispatcher("footer.html");
-        rd.include(req, resp);
     }
 
     @Override

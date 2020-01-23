@@ -2,8 +2,6 @@ $(document).ready(function(){
     if($('.hidable').attr('id') === "loginRef"){
         $("#addGameLink").attr("href", "#Login");
         $("#addGameLink").attr("data-toggle", "modal");
-        $("#communityLink").attr("href", "#Login");
-        $("#communityLink").attr("data-toggle", "modal");
         $("#libraryLink").attr("href", "#Login");
         $("#libraryLink").attr("data-toggle", "modal");
         $("#profileLink").attr("href", "#Login");

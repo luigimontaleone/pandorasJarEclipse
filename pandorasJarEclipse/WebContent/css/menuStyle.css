@@ -1,0 +1,16 @@
+#navMenu .nav-link:hover{
+    color: orange !important;
+}
+
+#navMenu{
+    height: 100%;
+    width: 344px;
+}
+
+#ulMenu{
+    margin: 0px;
+    margin-top: 0px;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+}

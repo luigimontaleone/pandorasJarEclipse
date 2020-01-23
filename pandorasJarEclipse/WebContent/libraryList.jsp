@@ -1,5 +1,3 @@
-<%@ page import="model.User" %>
-<%@ page import="model.Game" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 
@@ -7,19 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>LibraryMenu</title>
+    <link rel="stylesheet" href="css/menuStyle.css">
 </head>
 
 <body>
-    <aside>
-        <ul class="nav flex-column text-left shadow-none">
-            <h5>Libreria di ${user.getUsername()}</h5>
-            <c:if test="${user.getLibrary().size() != 0}">
-                <c:forEach items="${user.getLibrary()}" var="game">
-                    <li class="nav-item shadow"><a class="nav-link active" id="${game.getName()}" onclick="showGame(event)">${game.getName()}</a></li>
-                </c:forEach>
-            </c:if>
+    <div id="navMenu">
+        <ul class="nav nav-tabs flex-column text-left" id="ulMenu">
+            <c:forEach items="${library}" var="game">
+                <li class="nav-item"><a class="nav-link" href="/library?id=${game.id}" style="color: rgba(255,255,255,0.5);">${game.name}</a></li>
+            </c:forEach>
         </ul>
-    </aside>
+    </div>
 
 </body>
 

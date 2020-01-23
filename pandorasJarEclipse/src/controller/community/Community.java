@@ -19,19 +19,13 @@ import java.util.Set;
 public class Community extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(req.getSession().getAttribute("userId") != null) {
-            ArrayList<Post> posts = DAOFactory.getInstance().makePostDAO().getAllPosts();
-            req.getSession().setAttribute("posts", posts);
-            HashSet<Integer> postAlreadyLiked = new HashSet<Integer>();
-            HashSet<Integer> postAlreadyDisliked = new HashSet<Integer>();
-            req.getSession().setAttribute("postAlreadyLiked", postAlreadyLiked);
-            req.getSession().setAttribute("postAlreadyDisliked", postAlreadyDisliked);
-            RequestDispatcher rd = req.getRequestDispatcher("community.jsp");
-            rd.forward(req, resp);
-        }
-        else{
-            RequestDispatcher rd = req.getRequestDispatcher("notLogged.jsp");
-            rd.forward(req, resp);
-        }
+        ArrayList<Post> posts = DAOFactory.getInstance().makePostDAO().getAllPosts();
+        req.getSession().setAttribute("posts", posts);
+        HashSet<Integer> postAlreadyLiked = new HashSet<Integer>();
+        HashSet<Integer> postAlreadyDisliked = new HashSet<Integer>();
+        req.getSession().setAttribute("postAlreadyLiked", postAlreadyLiked);
+        req.getSession().setAttribute("postAlreadyDisliked", postAlreadyDisliked);
+        RequestDispatcher rd = req.getRequestDispatcher("community.jsp");
+        rd.forward(req, resp);
     }
 }
