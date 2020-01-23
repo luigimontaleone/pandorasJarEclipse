@@ -125,7 +125,6 @@ function addNewCommentForm(post)
 
 function addComment(comment, userId, postId)
 {
-    alert("here3");
 
     if(userId != null && userId != undefined && userId == comment.authorId)
     {

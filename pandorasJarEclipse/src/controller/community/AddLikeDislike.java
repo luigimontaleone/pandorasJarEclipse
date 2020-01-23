@@ -31,15 +31,20 @@ public class AddLikeDislike extends HttpServlet {
         {
             e.printStackTrace();
         }
+        ArrayList<Post> posts = (ArrayList<Post>) req.getSession().getAttribute("posts");
         HashSet<Integer> postAlreadyLiked = (HashSet<Integer>) req.getSession().getAttribute("postAlreadyLiked");
         HashSet<Integer> postAlreadyDisliked = (HashSet<Integer>) req.getSession().getAttribute("postAlreadyDisliked");
-        if(like == 1 && postAlreadyLiked.contains(idPost))
+        if(like == 1 && postAlreadyLiked.contains(idPost)){
+            send(posts, resp);
             return;
+        }
         else
             postAlreadyLiked.add(idPost);
 
-        if(like == 0 && postAlreadyDisliked.contains(idPost))
+        if(like == 0 && postAlreadyDisliked.contains(idPost)){
+            send(posts, resp);
             return;
+        }
         else
             postAlreadyDisliked.add(idPost);
 
@@ -48,7 +53,6 @@ public class AddLikeDislike extends HttpServlet {
 
         PostDAO postDao = DAOFactory.getInstance().makePostDAO();
         postDao.addLikeDislike(idPost, like);
-        ArrayList<Post> posts = (ArrayList<Post>) req.getSession().getAttribute("posts");
         for(Post post : posts)
         {
             if(post.getId() == idPost)
@@ -60,6 +64,10 @@ public class AddLikeDislike extends HttpServlet {
                 break;
             }
         }
+        send(posts, resp);
+    }
+
+    private void send(ArrayList<Post> posts, HttpServletResponse resp) throws IOException {
         String json = gson.toJson(posts);
         resp.getWriter().println(json);
         resp.getWriter().flush();
