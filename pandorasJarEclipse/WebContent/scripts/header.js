@@ -1,5 +1,5 @@
-$(document).ready(()=>{
-    if(Cookies.get("logged") === "false" || Cookies.get("logged") === undefined){
+$(document).ready(function(){
+    if($('.hidable').attr('id') === "loginRef"){
         $("#addGameLink").attr("href", "#Login");
         $("#addGameLink").attr("data-toggle", "modal");
         $("#communityLink").attr("href", "#Login");
@@ -9,6 +9,7 @@ $(document).ready(()=>{
         $("#profileLink").attr("href", "#Login");
         $("#profileLink").attr("data-toggle", "modal");
     }
+    //if(Cookies.get("logged") === "false" || Cookies.get("logged") === undefined)
     $("#loginBtn").click(function () {
         $.ajax({
             type: "POST",
@@ -25,10 +26,21 @@ $(document).ready(()=>{
                 $("#errorLabel").show();
             }
         })
-    });
+    })
+
+    function f()
+    {
+        let urlString = window.location;
+        let url = new URL(urlString);
+        let c = url.searchParams.get("registered");
+        if(c === "true"){
+            alert("REGISTRAZIONE EFFETTUATA");
+        }
+    }
+
 })
 
-$(document).ready(function () {
+/*$(document).ready(function () {
     let urlString = window.location;
     let url = new URL(urlString);
     let c = url.searchParams.get("registered");
@@ -36,4 +48,4 @@ $(document).ready(function () {
         alert("REGISTRAZIONE EFFETTUATA");
     }
     //TODO : testami
-});
+});*/

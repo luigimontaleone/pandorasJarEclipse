@@ -48,7 +48,7 @@
             </li>
             <% if (request.getSession().getAttribute("logged") == null || !(boolean) request.getSession().getAttribute("logged")) {%>
             <li>
-                <nav class="navbar hidable">
+                <nav id="loginRef" class="navbar hidable">
                     <a class="nav-link" href="#Login" data-toggle="modal">ACCEDI</a>
                     <a style="font-size: 180%; color: #5a6268">|</a>
                     <a class="nav-link" href="register">REGISTRATI</a>
@@ -56,7 +56,7 @@
             </li>
             <%} else if (request.getSession().getAttribute("logged") != null && (boolean) request.getSession().getAttribute("logged")) {%>
             <li>
-                <nav class="navbar hidable">
+                <nav id="logoutRef" class="navbar hidable">
                     <a class="nav-link" href="${pageContext.request.contextPath}/logout">LOGOUT</a>
                 </nav>
             </li>
