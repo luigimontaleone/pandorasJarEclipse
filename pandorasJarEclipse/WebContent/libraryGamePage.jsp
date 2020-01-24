@@ -85,7 +85,7 @@
                         <p id="prezzo">ACQUISTATO PER: ${gameLibrary.price}€</p>
                     </div>
                     <div class ="float-right">
-                        <button id="download" class="btn btn-success">Download!</button>
+                        <button id="download" class="btn btn-success" onclick="downloadGame(${gameLibrary.id})">Download!</button>
                     </div>
                 </div>
             </div>

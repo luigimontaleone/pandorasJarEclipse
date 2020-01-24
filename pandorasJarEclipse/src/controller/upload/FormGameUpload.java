@@ -17,6 +17,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import persistence.DAOFactory;
+import persistence.GameDAO;
 
 @WebServlet(value = "/formGameUpload", name = "formGameUpload")
 public class FormGameUpload extends HttpServlet {
@@ -53,7 +54,7 @@ public class FormGameUpload extends HttpServlet {
     private void storeFile(FileItem item, String directory) throws Exception {
         String name = item.getName();
         file = new File(filePath + File.separator + directory + File.separator + name);
-        //item.write(file); SCRITTURA DEL FILE JAR
+        item.write(file); //SCRITTURA DEL FILE JAR
         this.log("Uploaded: " + file.getName());
     }
 
@@ -99,23 +100,23 @@ public class FormGameUpload extends HttpServlet {
             e.printStackTrace();
         }
         Game g = DAOFactory.getInstance().makeGameDAO().getGameByName(name);
+        GameDAO gameDAO = DAOFactory.getInstance().makeGameDAO();
         if (g.getId() == 0) {
-            DAOFactory.getInstance().makeGameDAO().insertGame(0, name, (Integer) req.getSession().getAttribute("userId"),
+            gameDAO.insertGame(0, name, (Integer) req.getSession().getAttribute("userId"),
                     tag, (String)req.getSession().getAttribute("helpEmail"), price,
                     (String)req.getSession().getAttribute("paymentCoords"),description+"\n"+specs);
-            g = DAOFactory.getInstance().makeGameDAO().getGameByName(name);
-            if(previewImage != "") {
-                DAOFactory.getInstance().makeGameDAO().insertPreviewImage(g.getId(), previewImage, true);
-            }
+            g = gameDAO.getGameByName(name);
+            gameDAO.insertPreviewImage(g.getId(), previewImage, true);
             this.storeGameFile(jarFile, name);
             for (String img : images) {
-                if(img != "")
+                if(!img.isEmpty())
                 {
-                    DAOFactory.getInstance().makeGameDAO().insertPreviewImage(g.getId(), img, false);
+                    gameDAO.insertPreviewImage(g.getId(), img, false);
                 }
             }
-            if(video != "")
-                DAOFactory.getInstance().makeGameDAO().insertPreviewVideo(g.getId(), video);
+            if(!video.isEmpty()) {
+                gameDAO.insertPreviewVideo(g.getId(), video);
+            }
             DAOFactory.getInstance().makeGameDAO().insertNewGameIntoLibrary(g.getId(),g.getIdDeveloper());
         }
         return g;
@@ -123,17 +124,12 @@ public class FormGameUpload extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Game g=new Game();
+       Game g=new Game();
         try {
             g = handleInsertGame(req);
         } catch (Exception e) {
             e.printStackTrace();
         }
         resp.sendRedirect("/GameDataSheet?gameId=" + g.getId());
-    }
-
-    private static boolean isVideoFile(String path) {
-        String mimeType = URLConnection.guessContentTypeFromName(path);
-        return mimeType != null && mimeType.startsWith("video");
     }
 }
